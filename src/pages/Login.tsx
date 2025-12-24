@@ -1,12 +1,13 @@
-import { Button } from '@/components/ui/button';
-import type { AppDispatch } from '@/store';
-import { setAuth } from '@/store/modules/authSlice';
-import { setUser } from '@/store/modules/userSlice';
 import { useActionState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router';
 
-function Login() {
+import { Button } from '@/components/ui/button';
+import type { AppDispatch } from '@/store';
+import { setAuth } from '@/store/modules/authSlice';
+import { setUser } from '@/store/modules/userSlice';
+
+const Login = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
@@ -49,6 +50,6 @@ function Login() {
       </form>
     </div>
   );
-}
+};
 
 export default Login;

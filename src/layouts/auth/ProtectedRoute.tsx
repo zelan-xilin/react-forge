@@ -1,16 +1,17 @@
-import type { RootState } from '@/store';
 import { useSelector } from 'react-redux';
 import { Navigate, Outlet, useLocation } from 'react-router';
 
-function ProtectedRoute() {
+import type { RootState } from '@/store';
+
+const ProtectedRoute = () => {
   const location = useLocation();
   const user = useSelector((state: RootState) => state.user);
 
-  if (!user.token) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+  if (user.token) {
+    return <Outlet />;
   }
 
-  return <Outlet />;
-}
+  return <Navigate to="/login" state={{ from: location }} replace />;
+};
 
 export default ProtectedRoute;

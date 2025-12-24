@@ -1,5 +1,6 @@
-import { loadLocalState, saveLocalState } from '@/utils/storage';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+
+import { loadLocalState, saveLocalState } from '@/lib/storage';
 
 interface AuthState {
   menus: string[];

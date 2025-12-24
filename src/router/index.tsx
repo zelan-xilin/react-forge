@@ -1,5 +1,6 @@
-import Login from '@/pages/Login';
 import type { ComponentType, ReactNode } from 'react';
+
+import Login from '@/pages/Login';
 
 interface RouterConfig {
   path: string;

@@ -1,51 +1,24 @@
-import { Loader } from 'lucide-react';
-import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import { useEffect, useMemo } from 'react';
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router';
-import PermissionRoute from './layouts/PermissionRoute';
-import ProtectedRoute from './layouts/ProtectedRoute';
+
+import { PermissionRoute, ProtectedRoute, RedirectToFirstAllowedRoute } from './layouts/auth';
+import SuspenseFallback from './layouts/SuspenseFallback';
 import { permissionRoutes, whiteListRoutes } from './router';
-import type { RootState } from './store';
-
-function RouteFallback() {
-  return (
-    <div className="text-primary flex h-full items-center justify-center">
-      <Loader className="animate-spin" />
-    </div>
-  );
-}
-
-function RedirectToFirstAllowed() {
-  const auth = useSelector((state: RootState) => state.auth);
-
-  const firstRouter = useMemo(() => {
-    const nonParameterizedPathRegex = /^[^:]+$/;
-
-    return permissionRoutes.find(
-      r =>
-        nonParameterizedPathRegex.test(r.path) &&
-        (auth.hasUnrestrictedPermissions || auth.menus.includes(r.path)),
-    );
-  }, [auth.hasUnrestrictedPermissions, auth.menus]);
-
-  if (!firstRouter) {
-    return <div>您没有可访问的页面。</div>;
-  }
-
-  return <Navigate to={firstRouter.path} replace />;
-}
+import { preloadIdle } from './router/preloader';
 
 function App() {
+  useEffect(() => {
+    preloadIdle();
+  }, []);
+
   const routerInstance = useMemo(() => {
     const rootChildren = permissionRoutes.map(r => {
       return {
         path: r.path.replace(/^\//, ''),
+        element: <PermissionRoute path={r.path} />,
         lazy: async () => {
           const mod = await r.lazy();
-
-          return {
-            element: <PermissionRoute path={r.path}>{<mod.default />}</PermissionRoute>,
-          };
+          return { Component: mod.default };
         },
       };
     });
@@ -55,11 +28,11 @@ function App() {
       {
         path: '/',
         element: <ProtectedRoute />,
-        hydrateFallbackElement: <RouteFallback />,
+        hydrateFallbackElement: <SuspenseFallback />,
         children: [
           {
             index: true,
-            element: <RedirectToFirstAllowed />,
+            element: <RedirectToFirstAllowedRoute />,
           },
           ...rootChildren,
           {

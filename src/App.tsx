@@ -1,8 +1,7 @@
 import { useEffect, useMemo } from 'react';
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router';
 
-import { PermissionRoute, ProtectedRoute, RedirectToFirstAllowedRoute } from './layouts/auth';
-import SuspenseFallback from './layouts/SuspenseFallback';
+import { AppWrapper, AuthGuard, PermissionGuard, RedirectToFirstPermittedRoute, RouteLoadingFallback } from './layouts';
 import { permissionRoutes, whiteListRoutes } from './router';
 import { preloadIdle } from './router/preloader';
 
@@ -15,7 +14,6 @@ function App() {
     const rootChildren = permissionRoutes.map(r => {
       return {
         path: r.path.replace(/^\//, ''),
-        element: <PermissionRoute path={r.path} />,
         lazy: async () => {
           const mod = await r.lazy();
           return { Component: mod.default };
@@ -27,17 +25,28 @@ function App() {
       ...whiteListRoutes,
       {
         path: '/',
-        element: <ProtectedRoute />,
-        hydrateFallbackElement: <SuspenseFallback />,
+        element: <AuthGuard />,
+        hydrateFallbackElement: <RouteLoadingFallback />,
         children: [
           {
-            index: true,
-            element: <RedirectToFirstAllowedRoute />,
-          },
-          ...rootChildren,
-          {
-            path: '*',
-            element: <Navigate to="/" replace />,
+            element: <AppWrapper />,
+            children: [
+              {
+                element: <PermissionGuard />,
+                children: [
+                  {
+                    index: true,
+                    element: <RedirectToFirstPermittedRoute />,
+                  },
+                  ...rootChildren,
+                  {
+                    path: '*',
+                    element: <Navigate to="/" replace />,
+                  },
+                ]
+              },
+
+            ]
           },
         ],
       },

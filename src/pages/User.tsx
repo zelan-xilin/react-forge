@@ -1,5 +1,5 @@
 const User = () => {
-  return <h1>User Page</h1>;
+  return <input type="text" placeholder="User" className="border" />
 };
 
 export default User;

@@ -16,7 +16,13 @@ function App() {
         path: r.path.replace(/^\//, ''),
         lazy: async () => {
           const mod = await r.lazy();
-          return { Component: mod.default };
+          return {
+            Component: mod.default,
+            ErrorBoundary: mod.ErrorBoundary,
+            loader: mod.loader,
+            action: mod.action,
+            shouldRevalidate: mod.shouldRevalidate,
+          };
         },
       };
     });

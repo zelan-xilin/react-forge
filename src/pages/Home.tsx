@@ -1,5 +1,5 @@
 const Home = () => {
-  return <h1>Home Page</h1>;
+  return <input type="text" placeholder="home" className="border" />
 };
 
 export default Home;

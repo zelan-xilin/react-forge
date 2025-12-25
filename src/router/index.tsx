@@ -21,7 +21,13 @@ export const whiteListRoutes: WhiteListRouteConfig[] = [
 ];
 
 interface PermissionRouteConfig extends RouterConfig {
-  lazy: () => Promise<{ default: ComponentType<unknown> }>;
+  lazy: () => Promise<{
+    default: ComponentType<unknown>
+    ErrorBoundary?: ComponentType<unknown>
+    loader?: () => Promise<unknown>
+    action?: () => Promise<unknown>
+    shouldRevalidate?: () => boolean
+  }>
 }
 export const permissionRoutes: PermissionRouteConfig[] = [
   {

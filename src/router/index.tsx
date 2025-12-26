@@ -1,6 +1,7 @@
 import type { ComponentType, ReactNode } from 'react';
 
 import Login from '@/pages/Login';
+import { matchPath } from 'react-router';
 
 interface RouterConfig {
   path: string;
@@ -22,12 +23,12 @@ export const whiteListRoutes: WhiteListRouteConfig[] = [
 
 interface PermissionRouteConfig extends RouterConfig {
   lazy: () => Promise<{
-    default: ComponentType<unknown>
-    ErrorBoundary?: ComponentType<unknown>
-    loader?: () => Promise<unknown>
-    action?: () => Promise<unknown>
-    shouldRevalidate?: () => boolean
-  }>
+    default: ComponentType<unknown>;
+    ErrorBoundary?: ComponentType<unknown>;
+    loader?: () => Promise<unknown>;
+    action?: () => Promise<unknown>;
+    shouldRevalidate?: () => boolean;
+  }>;
 }
 export const permissionRoutes: PermissionRouteConfig[] = [
   {
@@ -43,3 +44,7 @@ export const permissionRoutes: PermissionRouteConfig[] = [
     icon: 'user',
   },
 ];
+
+export const findRouteByPath = (path: string, list = permissionRoutes) => {
+  return list.find(r => matchPath({ path: r.path, end: true }, path) !== null);
+};

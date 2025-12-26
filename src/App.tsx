@@ -1,7 +1,13 @@
 import { useEffect, useMemo } from 'react';
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router';
 
-import { AppWrapper, AuthGuard, PermissionGuard, RedirectToFirstPermittedRoute, RouteLoadingFallback } from './layouts';
+import {
+  AppWrapper,
+  AuthGuard,
+  PermissionGuard,
+  RedirectToFirstPermittedRoute,
+  RouteLoadingFallback,
+} from './layouts';
 import { permissionRoutes, whiteListRoutes } from './router';
 import { preloadIdle } from './router/preloader';
 
@@ -49,10 +55,9 @@ function App() {
                     path: '*',
                     element: <Navigate to="/" replace />,
                   },
-                ]
+                ],
               },
-
-            ]
+            ],
           },
         ],
       },

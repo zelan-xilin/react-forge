@@ -7,8 +7,8 @@ const request: AxiosInstance = axios.create({
 });
 
 request.interceptors.request.use(
-  (config) => {
-    const token = store.getState().user.token
+  config => {
+    const token = store.getState().user.token;
 
     if (token && config.headers) {
       config.headers.Authorization = token;
@@ -16,13 +16,13 @@ request.interceptors.request.use(
 
     return config;
   },
-  (error) => {
+  error => {
     return Promise.reject(error);
-  }
+  },
 );
 
 request.interceptors.response.use(
-  (response) => {
+  response => {
     const { data, status } = response;
 
     if (status === 200) {
@@ -31,9 +31,9 @@ request.interceptors.response.use(
 
     return Promise.reject(data);
   },
-  (error) => {
+  error => {
     return Promise.reject(error);
-  }
+  },
 );
 
 export default request;

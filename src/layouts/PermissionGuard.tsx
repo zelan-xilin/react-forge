@@ -1,8 +1,7 @@
+import { useSelector } from 'react-redux';
+import { matchPath, Navigate, Outlet, useLocation } from 'react-router';
 
-import { useSelector } from "react-redux";
-import { matchPath, Navigate, Outlet, useLocation } from "react-router";
-
-import type { RootState } from "@/store";
+import type { RootState } from '@/store';
 
 const PermissionGuard = () => {
   const location = useLocation();
@@ -19,6 +18,6 @@ const PermissionGuard = () => {
   }
 
   return <Outlet />;
-}
+};
 
 export default PermissionGuard;

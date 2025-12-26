@@ -4,7 +4,7 @@ export interface KeepAliveCache {
   node: ReactNode;
   title?: string;
   weight: number;
-  version: number
+  version: number;
 }
 export interface KeepAliveContextType {
   getKeys: () => string[];

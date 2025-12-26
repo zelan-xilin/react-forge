@@ -2,7 +2,7 @@ import { Suspense, useEffect, useMemo, useState } from 'react';
 import { Link, useLocation } from 'react-router';
 
 import { findRouteByPath } from '@/router';
-import RouteLoadingFallback from './RouteLoadingFallback';
+import RouteLoadingFallback from './fallback/RouteLoadingFallback';
 import { KeepAliveOutlet, KeepAliveProvider, useKeepAlive } from './keep-alive';
 
 const Tab = () => {

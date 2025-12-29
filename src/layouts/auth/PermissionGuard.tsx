@@ -1,6 +1,7 @@
 import { useSelector } from 'react-redux';
-import { matchPath, Navigate, Outlet, useLocation } from 'react-router';
+import { Navigate, Outlet, useLocation } from 'react-router';
 
+import { isExactPathMatch } from '@/router';
 import type { RootState } from '@/store';
 
 const PermissionGuard = () => {
@@ -9,9 +10,7 @@ const PermissionGuard = () => {
 
   const allowed =
     auth.hasUnrestrictedPermissions ||
-    auth.menus.some(
-      menuPath => matchPath({ path: menuPath, end: true }, location.pathname) !== null,
-    );
+    auth.menus.some(menuPath => isExactPathMatch(menuPath, location.pathname));
 
   if (!allowed) {
     return <Navigate to="/" replace />;

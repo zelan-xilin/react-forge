@@ -70,8 +70,8 @@ function KeepAliveProvider({ children }: { children: ReactNode }) {
       const prevNode = prev?.node ?? null;
       const nextNode = node ?? null;
 
-      const prevHad = prevNode != null;
-      const nextHad = nextNode != null;
+      const prevHad = prevNode !== null;
+      const nextHad = nextNode !== null;
 
       if (!prevHad && nextHad) {
         cacheAliveCount.current += 1;

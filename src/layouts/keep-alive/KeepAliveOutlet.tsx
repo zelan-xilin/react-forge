@@ -29,7 +29,7 @@ const KeepAliveOutlet = ({ max = Infinity }: KeepAliveOutletProps) => {
       {keys.map(k => {
         const element = getOutlet(k);
 
-        if (!element) {
+        if (!element?.node) {
           return null;
         }
 

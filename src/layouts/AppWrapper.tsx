@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 
 import { Button } from '@/components/ui/button';
 import { isExactPathMatch, permissionRoutes } from '@/router';
-import RouteLoadingFallback from './fallback/RouteLoadingFallback';
+import { RouteLoadingFallback } from './fallback';
 import { KeepAliveOutlet, KeepAliveProvider, useKeepAlive } from './keep-alive';
 
 const Tab = () => {

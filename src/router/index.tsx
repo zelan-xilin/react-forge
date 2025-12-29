@@ -1,7 +1,7 @@
 import type { ComponentType, ReactNode } from 'react';
+import { matchPath } from 'react-router';
 
 import Login from '@/pages/Login';
-import { matchPath } from 'react-router';
 
 interface RouterConfig {
   path: string;
@@ -45,6 +45,6 @@ export const permissionRoutes: PermissionRouteConfig[] = [
   },
 ];
 
-export const findRouteByPath = (path: string, list = permissionRoutes) => {
-  return list.find(r => matchPath({ path: r.path, end: true }, path) !== null);
+export const isExactPathMatch = (pattern: string, pathname: string) => {
+  return matchPath({ path: pattern, end: true }, pathname) !== null;
 };

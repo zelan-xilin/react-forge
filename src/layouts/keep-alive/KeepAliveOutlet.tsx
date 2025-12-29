@@ -1,5 +1,6 @@
 import { useLocation, useOutlet } from 'react-router';
 
+import { useEffect, useMemo, useSyncExternalStore } from 'react';
 import OffscreenFrame from './OffscreenFrame';
 import { useKeepAlive } from './useKeepAlive';
 
@@ -9,20 +10,32 @@ interface KeepAliveOutletProps {
 const KeepAliveOutlet = ({ max = Infinity }: KeepAliveOutletProps) => {
   const outlet = useOutlet();
   const location = useLocation();
-  const { getKeys, getOutlet, addOutlet } = useKeepAlive();
+  const { getKeys, getOutlet, addOutlet, subscribeOutlets, getOutletVersion } = useKeepAlive();
+  const outletVersion = useSyncExternalStore(subscribeOutlets, getOutletVersion, getOutletVersion);
 
-  const currentOutlet = getOutlet(location.pathname) ?? { node: outlet, title: undefined };
-  addOutlet(location.pathname, currentOutlet.node, currentOutlet.title, max);
+  useEffect(() => {
+    const current = getOutlet(location.pathname);
 
-  const entries = getKeys().map(key => [key, getOutlet(key)] as const);
+    addOutlet(location.pathname, current?.node ?? outlet, current?.title, max);
+  }, [addOutlet, getOutlet, location.pathname, outlet, max]);
+
+  const keys = useMemo(() => {
+    void outletVersion;
+
+    return getKeys();
+  }, [getKeys, outletVersion]);
 
   return (
     <>
-      {entries.map(([k, element]) => (
-        <OffscreenFrame key={`${k}-${element?.version}`} active={k === location.pathname}>
-          {element?.node}
-        </OffscreenFrame>
-      ))}
+      {keys.map(k => {
+        const element = getOutlet(k);
+
+        return (
+          <OffscreenFrame key={`${k}-${element?.version ?? 0}`} active={k === location.pathname}>
+            {element?.node}
+          </OffscreenFrame>
+        );
+      })}
     </>
   );
 };

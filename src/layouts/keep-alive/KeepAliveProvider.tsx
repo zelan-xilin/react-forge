@@ -29,26 +29,27 @@ function KeepAliveProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const removeLowestWeight = (activeKey: string) => {
-    let minWeight = Infinity;
-    let minItem: KeepAliveCache | null = null;
+    let min: KeepAliveCache | null = null;
 
-    for (const [key, value] of cache.current) {
-      if (value.node === null || activeKey === key) {
+    for (const [k, v] of cache.current) {
+      if (k === activeKey) {
+        continue;
+      }
+      if (!v.node) {
         continue;
       }
 
-      if (value.weight < minWeight) {
-        minWeight = value.weight;
-        minItem = value;
+      if (!min || v.weight < min.weight) {
+        min = v;
       }
     }
 
-    if (minItem === null) {
+    if (!min) {
       return;
     }
 
-    minItem.node = null;
-    minItem.version += 1;
+    min.node = null;
+    min.instanceId += 1;
     cacheAliveCount.current -= 1;
   };
 
@@ -63,48 +64,43 @@ function KeepAliveProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const addOutlet: KeepAliveContextType['addOutlet'] = useCallback(
-    (key, node, title, max = Infinity) => {
+    (key, node, max = Infinity) => {
       const prev = cache.current.get(key);
 
       const prevNode = prev?.node ?? null;
       const nextNode = node ?? null;
 
-      const prevHadNode = prevNode != null;
-      const nextHadNode = nextNode != null;
+      const prevHad = prevNode != null;
+      const nextHad = nextNode != null;
 
-      const prevTitle = prev?.title;
-      const nextTitle = title ?? cacheTitle.current.get(key) ?? prevTitle;
-
-      if (!prevHadNode && nextHadNode) {
+      if (!prevHad && nextHad) {
         cacheAliveCount.current += 1;
       }
-      if (prevHadNode && !nextHadNode) {
+      if (prevHad && !nextHad) {
         cacheAliveCount.current -= 1;
       }
 
-      cache.current.set(key, {
-        node: nextNode,
-        title: nextTitle,
-        weight: Date.now(),
-        version: prev?.version ?? 0,
-      });
+      if (!prev) {
+        cache.current.set(key, {
+          node: nextNode,
+          title: cacheTitle.current.get(key),
+          weight: Date.now(),
+          instanceId: 0,
+          refreshId: 0,
+        });
+      } else {
+        prev.node = nextNode;
+        prev.weight = Date.now();
+      }
+
       cacheTitle.current.delete(key);
 
-      let removeCacheNode = false;
       if (cacheAliveCount.current > max) {
-        removeCacheNode = true;
         removeLowestWeight(key);
       }
 
-      const isAdd = !prev;
-      const nodeChanged = prev?.node !== nextNode;
-      const titleChanged = prev?.title !== nextTitle;
-      if (isAdd || titleChanged) {
-        notifyTabs();
-      }
-      if (isAdd || nodeChanged || removeCacheNode) {
-        notifyOutlets();
-      }
+      notifyTabs();
+      notifyOutlets();
     },
     [notifyTabs, notifyOutlets],
   );
@@ -116,7 +112,7 @@ function KeepAliveProvider({ children }: { children: ReactNode }) {
         return;
       }
 
-      if (item.node !== null) {
+      if (item.node) {
         cacheAliveCount.current -= 1;
       }
 
@@ -130,7 +126,7 @@ function KeepAliveProvider({ children }: { children: ReactNode }) {
       }
 
       item.node = null;
-      item.version += 1;
+      item.instanceId += 1;
       notifyOutlets();
     },
     [notifyOutlets, notifyTabs],
@@ -143,7 +139,7 @@ function KeepAliveProvider({ children }: { children: ReactNode }) {
         return;
       }
 
-      item.version += 1;
+      item.refreshId += 1;
       item.weight = Date.now();
 
       notifyOutlets();
@@ -161,7 +157,9 @@ function KeepAliveProvider({ children }: { children: ReactNode }) {
         return;
       }
 
-      cacheTitle.current.set(key, title);
+      if (!cacheItem) {
+        cacheTitle.current.set(key, title);
+      }
     },
     [notifyTabs],
   );

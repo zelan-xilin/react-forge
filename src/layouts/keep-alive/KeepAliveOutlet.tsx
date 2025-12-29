@@ -11,13 +11,12 @@ const KeepAliveOutlet = ({ max = Infinity }: KeepAliveOutletProps) => {
   const outlet = useOutlet();
   const location = useLocation();
   const { getKeys, getOutlet, addOutlet, subscribeOutlets, getOutletVersion } = useKeepAlive();
+
   const outletVersion = useSyncExternalStore(subscribeOutlets, getOutletVersion, getOutletVersion);
 
   useEffect(() => {
-    const current = getOutlet(location.pathname);
-
-    addOutlet(location.pathname, current?.node ?? outlet, current?.title, max);
-  }, [addOutlet, getOutlet, location.pathname, outlet, max]);
+    addOutlet(location.pathname, outlet, max);
+  }, [addOutlet, location.pathname, outlet, max]);
 
   const keys = useMemo(() => {
     void outletVersion;
@@ -30,9 +29,13 @@ const KeepAliveOutlet = ({ max = Infinity }: KeepAliveOutletProps) => {
       {keys.map(k => {
         const element = getOutlet(k);
 
+        if (!element) {
+          return null;
+        }
+
         return (
-          <OffscreenFrame key={`${k}-${element?.version ?? 0}`} active={k === location.pathname}>
-            {element?.node}
+          <OffscreenFrame key={`${k}-${element.instanceId ?? 0}`} active={k === location.pathname}>
+            {element.node}
           </OffscreenFrame>
         );
       })}

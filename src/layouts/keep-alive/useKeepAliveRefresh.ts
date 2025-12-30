@@ -1,14 +1,12 @@
 import { useSyncExternalStore } from 'react';
-import { useLocation } from 'react-router';
 
 import { useKeepAlive } from './useKeepAlive';
 
-export const useKeepAliveRefresh = () => {
-  const location = useLocation();
+export const useKeepAliveRefresh = (pagePath: string) => {
   const { getOutlet, subscribeOutlets, getOutletVersion } = useKeepAlive();
 
-  const v = useSyncExternalStore(subscribeOutlets, getOutletVersion);
+  const v = useSyncExternalStore(subscribeOutlets, getOutletVersion, getOutletVersion);
   void v;
 
-  return getOutlet(location.pathname)?.refreshId;
+  return getOutlet(pagePath)?.refreshId;
 };

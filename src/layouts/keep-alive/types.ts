@@ -14,7 +14,7 @@ export interface KeepAliveContextType {
 
   addOutlet: (key: string, node: ReactNode, max?: number) => void;
   removeOutlet: (key: string, completely?: boolean) => void;
-  refreshOutlet: (key: string) => void;
+  refreshOutlet: (key: string, reset?: boolean) => void;
   setTitle: (key: string, title: string) => void;
 
   /** Tab 订阅 */

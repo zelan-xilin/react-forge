@@ -4,7 +4,12 @@ import { Link } from 'react-router';
 import { Button } from '@/components/ui/button';
 import { isExactPathMatch, permissionRoutes } from '@/router';
 import { RouteLoadingFallback } from './fallback';
-import { KeepAliveOutlet, KeepAliveProvider, useKeepAlive } from './keep-alive';
+import {
+  KeepAliveOutlet,
+  KeepAliveProvider,
+  useKeepAlive,
+  useKeepAliveActiveKey,
+} from './keep-alive';
 
 const Tab = () => {
   const {
@@ -52,7 +57,7 @@ const Tab = () => {
 
       <br />
       <div className="flex gap-6">
-        <Button onClick={() => refreshOutlet('/home')}>刷新home</Button>
+        <Button onClick={() => refreshOutlet('/home', true)}>刷新home_reset</Button>
         <Button onClick={() => refreshOutlet('/user')}>刷新user</Button>
       </div>
 
@@ -78,6 +83,8 @@ const Tab = () => {
 };
 
 const AppWrapper = () => {
+  const activeKey = useKeepAliveActiveKey();
+
   return (
     <KeepAliveProvider>
       <div className="h-full flex flex-col">
@@ -96,7 +103,7 @@ const AppWrapper = () => {
 
         <main className="flex-1">
           <Suspense fallback={<RouteLoadingFallback />}>
-            <KeepAliveOutlet />
+            <KeepAliveOutlet activeKey={activeKey} />
           </Suspense>
         </main>
       </div>

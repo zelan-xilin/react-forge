@@ -132,7 +132,7 @@ function KeepAliveProvider({ children }: { children: ReactNode }) {
     [notifyOutlets, notifyTabs],
   );
   const refreshOutlet: KeepAliveContextType['refreshOutlet'] = useCallback(
-    key => {
+    (key, reset) => {
       const item = cache.current.get(key)!;
 
       if (!item) {
@@ -141,6 +141,10 @@ function KeepAliveProvider({ children }: { children: ReactNode }) {
 
       item.refreshId += 1;
       item.weight = Date.now();
+
+      if (reset) {
+        item.instanceId += 1;
+      }
 
       notifyOutlets();
     },

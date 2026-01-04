@@ -1,13 +1,8 @@
-import type { RootState } from '@/store';
-import { User } from 'lucide-react';
-import { useSelector } from 'react-redux';
-
 import { Logo } from '@/assets/svg';
-import AppMenu from './AppMenu';
+import AppHeaderMenu from './AppHeaderMenu';
+import AppHeaderUser from './AppHeaderUser';
 
 const AppHeader = () => {
-  const user = useSelector((state: RootState) => state.user);
-
   return (
     <header className="flex h-14 flex-none items-center px-4 gap-4">
       <div className="flex-none flex items-center gap-2">
@@ -16,12 +11,11 @@ const AppHeader = () => {
       </div>
 
       <div className="flex-1">
-        <AppMenu />
+        <AppHeaderMenu />
       </div>
 
-      <div className="flex-none flex items-center gap-2">
-        <User />
-        <span>{user.username}</span>
+      <div className="flex-none">
+        <AppHeaderUser />
       </div>
     </header>
   );

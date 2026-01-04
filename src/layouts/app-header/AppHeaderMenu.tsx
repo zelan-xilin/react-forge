@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/navigation-menu';
 import { Link } from 'react-router';
 
-const AppMenu = () => {
+const AppHeaderMenu = () => {
   return (
     <NavigationMenu>
       <NavigationMenuList className="flex-wrap">
@@ -47,4 +47,4 @@ const AppMenu = () => {
   );
 };
 
-export default AppMenu;
+export default AppHeaderMenu;

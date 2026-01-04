@@ -1,4 +1,4 @@
-import AppHeader from './AppHeader';
+import AppHeader from './app-header';
 import AppMain from './AppMain';
 import AppTab from './AppTab';
 import { KeepAliveProvider } from './keep-alive';

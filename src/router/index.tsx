@@ -1,49 +1,7 @@
-import type { ComponentType, ReactNode } from 'react';
 import { matchPath } from 'react-router';
 
-import Login from '@/pages/Login';
-
-interface RouterConfig {
-  path: string;
-  title: string | null;
-  icon: string | null;
-}
-
-interface WhiteListRouteConfig extends RouterConfig {
-  element: ReactNode;
-}
-export const whiteListRoutes: WhiteListRouteConfig[] = [
-  {
-    path: '/login',
-    element: <Login />,
-    title: '登录',
-    icon: 'login',
-  },
-];
-
-interface PermissionRouteConfig extends RouterConfig {
-  lazy: () => Promise<{
-    default: ComponentType<unknown>;
-    ErrorBoundary?: ComponentType<unknown>;
-    loader?: () => Promise<unknown>;
-    action?: () => Promise<unknown>;
-    shouldRevalidate?: () => boolean;
-  }>;
-}
-export const permissionRoutes: PermissionRouteConfig[] = [
-  {
-    path: '/home',
-    lazy: () => import('@/pages/Home'),
-    title: '首页',
-    icon: 'home',
-  },
-  {
-    path: '/user',
-    lazy: () => import('@/pages/User'),
-    title: '用户管理',
-    icon: 'user',
-  },
-];
+export { menuRoutes, permissionRoutes } from './permissionRouter';
+export { whiteRoutes } from './whiteRouter';
 
 export const isExactPathMatch = (pattern: string, pathname: string) => {
   return matchPath({ path: pattern, end: true }, pathname) !== null;

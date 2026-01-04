@@ -1,4 +1,4 @@
-import { permissionRoutes } from '.';
+import { permissionRoutes } from './permissionRouter';
 
 const registry = new Map(permissionRoutes.map(r => [r.path, r.lazy]));
 const loaded = new Set<string>();

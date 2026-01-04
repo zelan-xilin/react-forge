@@ -8,7 +8,7 @@ import {
   RedirectToFirstPermittedRoute,
   RouteLoadingFallback,
 } from './layouts';
-import { permissionRoutes, whiteListRoutes } from './router';
+import { permissionRoutes, whiteRoutes } from './router';
 import { preloadIdle } from './router/preloader';
 
 function App() {
@@ -34,7 +34,7 @@ function App() {
     });
 
     return createBrowserRouter([
-      ...whiteListRoutes,
+      ...whiteRoutes,
       {
         path: '/',
         element: <AuthGuard />,

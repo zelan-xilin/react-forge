@@ -6,6 +6,5 @@ export const whiteRoutes: WhiteListRouterConfig[] = [
     path: '/login',
     element: <Login />,
     title: '登录',
-    icon: 'login',
   },
 ];

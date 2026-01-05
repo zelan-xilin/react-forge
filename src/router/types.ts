@@ -3,7 +3,6 @@ import type { ComponentType, ReactNode } from 'react';
 interface BaseRouterConfig {
   path: string;
   title: string | null;
-  icon: string | null;
 }
 
 export interface WhiteListRouterConfig extends BaseRouterConfig {

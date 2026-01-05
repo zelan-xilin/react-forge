@@ -27,24 +27,20 @@ export const menuRoutes: MenuRouterConfig[] = [
     path: '/dashboard',
     lazy: () => import('@/pages/dashboard'),
     title: '首页',
-    icon: 'dashboard',
   },
   {
     path: '/system',
     title: '系统管理',
-    icon: 'system',
     children: [
       {
         path: '/system/user',
         lazy: () => import('@/pages/system/user'),
         title: '用户管理',
-        icon: 'user',
       },
       {
         path: '/system/role',
         lazy: () => import('@/pages/system/role'),
         title: '角色管理',
-        icon: 'role',
       },
     ],
   },

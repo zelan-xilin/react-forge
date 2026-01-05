@@ -28,9 +28,9 @@ const AppHeaderUser = () => {
 
   return (
     <div className="flex items-center gap-2">
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1">
         <User className="size-5" />
-        <span className="text-base font-medium">{user.username}</span>
+        <span className="text-sm font-medium">{user.username}</span>
       </div>
 
       <AlertDialog>

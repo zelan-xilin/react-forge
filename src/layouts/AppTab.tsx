@@ -20,7 +20,6 @@ const AppTab = () => {
         return {
           path,
           title: item.title ?? permissionRoute?.title,
-          icon: permissionRoute?.icon,
         };
       })
       .filter(e => e.title);

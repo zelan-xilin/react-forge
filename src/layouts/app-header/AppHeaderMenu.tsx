@@ -15,7 +15,7 @@ import { menuRoutes, type MenuRouterConfig } from '@/router';
 import type { RootState } from '@/store';
 
 const AppHeaderMenu = () => {
-  const location = useLocation()
+  const location = useLocation();
   const auth = useSelector((state: RootState) => state.auth);
 
   const navList = useMemo(() => {
@@ -42,15 +42,14 @@ const AppHeaderMenu = () => {
   }, [auth.menus, auth.hasUnrestrictedPermissions]);
 
   const menuClassName = (path: string, parent?: boolean) => {
-    const classes = ['text-sm', 'font-medium']
+    const classes = ['text-sm', 'font-medium'];
 
     if (parent ? location.pathname.startsWith(path) : location.pathname === path) {
       classes.push('bg-primary!', 'text-primary-foreground!');
     }
 
-
     return classes.join(' ');
-  }
+  };
 
   return (
     <NavigationMenu>

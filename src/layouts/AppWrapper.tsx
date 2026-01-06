@@ -10,7 +10,7 @@ const AppWrapper = () => {
 
   return (
     <KeepAliveProvider>
-      <div className="h-full flex flex-col box-border py-4 pl-4">
+      <div className="h-full flex flex-col box-border py-4 pl-4 gap-4">
         <header className="flex-none pr-4 box-border flex justify-between items-center">
           <AppHeaderLogo />
           <AppHeaderMenu />

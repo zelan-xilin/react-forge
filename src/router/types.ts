@@ -10,6 +10,7 @@ export interface WhiteListRouterConfig extends BaseRouterConfig {
 }
 
 export interface MenuRouterConfig extends BaseRouterConfig {
+  icon: ComponentType<{ className?: string }>;
   children?: MenuRouterConfig[];
   lazy?: () => Promise<{
     default: ComponentType<unknown>;

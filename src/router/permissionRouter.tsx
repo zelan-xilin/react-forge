@@ -1,3 +1,4 @@
+import { House, ShieldUser, UserRound } from 'lucide-react';
 import type { MenuRouterConfig, PermissionRouterConfig } from './types';
 
 const collectPermissionRoutes = (routes: MenuRouterConfig[]) => {
@@ -27,22 +28,19 @@ export const menuRoutes: MenuRouterConfig[] = [
     path: '/dashboard',
     lazy: () => import('@/pages/dashboard'),
     title: '首页',
+    icon: House,
   },
   {
-    path: '/system',
-    title: '系统管理',
-    children: [
-      {
-        path: '/system/user',
-        lazy: () => import('@/pages/system/user'),
-        title: '用户管理',
-      },
-      {
-        path: '/system/role',
-        lazy: () => import('@/pages/system/role'),
-        title: '角色管理',
-      },
-    ],
+    path: '/user',
+    lazy: () => import('@/pages/user'),
+    title: '用户管理',
+    icon: UserRound,
+  },
+  {
+    path: '/role',
+    lazy: () => import('@/pages/role'),
+    title: '角色管理',
+    icon: ShieldUser,
   },
 ];
 

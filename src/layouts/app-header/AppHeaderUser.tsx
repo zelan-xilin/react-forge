@@ -1,4 +1,4 @@
-import { LogOut, User } from 'lucide-react';
+import { Bell, LogOut, User } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
@@ -13,6 +13,15 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import type { AppDispatch, RootState } from '@/store';
 import { clearAuth } from '@/store/modules/authSlice';
 import { clearUser } from '@/store/modules/userSlice';
@@ -27,16 +36,39 @@ const AppHeaderUser = () => {
   };
 
   return (
-    <div className="flex items-center gap-2">
-      <div className="flex items-center gap-1">
-        <User className="size-5" />
-        <span className="text-sm font-medium">{user.username}</span>
-      </div>
+    <div className="flex items-center">
+      <Button size="icon-xl" variant="ghost">
+        <Bell className="size-6" />
+      </Button>
+
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button size="icon-xl" variant="ghost">
+            <User className="size-6" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuLabel>个人信息</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem>
+            用户名
+            <DropdownMenuShortcut>{user.username}</DropdownMenuShortcut>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            登录账号
+            <DropdownMenuShortcut>{user.account}</DropdownMenuShortcut>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
 
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button variant="ghost" className="text-destructive hover:text-destructive">
-            <LogOut />
+          <Button
+            size="icon-xl"
+            variant="ghost"
+            className="text-destructive hover:text-destructive"
+          >
+            <LogOut className="size-6" />
           </Button>
         </AlertDialogTrigger>
         <AlertDialogContent>

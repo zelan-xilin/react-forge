@@ -4,10 +4,7 @@ import { Navigate } from 'react-router';
 
 import { permissionRoutes } from '@/router';
 import type { RootState } from '@/store';
-
-const NoAccessibleRoutes = () => {
-  return <div>您没有可访问的页面。</div>;
-};
+import NoAccessibleRoutes from './NoAccessibleRoutes';
 
 const RedirectToFirstPermittedRoute = () => {
   const auth = useSelector((state: RootState) => state.auth);
@@ -18,9 +15,9 @@ const RedirectToFirstPermittedRoute = () => {
     return permissionRoutes.find(
       r =>
         nonParameterizedPathRegex.test(r.path) &&
-        (auth.hasUnrestrictedPermissions || auth.menus.includes(r.path)),
+        (auth.hasUnrestrictedPermissions || auth.paths.includes(r.path)),
     );
-  }, [auth.hasUnrestrictedPermissions, auth.menus]);
+  }, [auth.hasUnrestrictedPermissions, auth.paths]);
 
   if (!firstRouter) {
     return <NoAccessibleRoutes />;

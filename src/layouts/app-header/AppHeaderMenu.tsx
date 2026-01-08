@@ -13,7 +13,7 @@ const AppHeaderMenu = () => {
   return (
     <div className="flex gap-2">
       {menuRoutes
-        .filter(r => auth.hasUnrestrictedPermissions || auth.menus.includes(r.path))
+        .filter(r => auth.hasUnrestrictedPermissions || auth.paths.includes(r.path))
         .map(n => {
           const Icon = n.icon;
 

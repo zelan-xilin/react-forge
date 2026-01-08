@@ -25,14 +25,18 @@ import {
 import type { AppDispatch, RootState } from '@/store';
 import { clearAuth } from '@/store/modules/authSlice';
 import { clearUser } from '@/store/modules/userSlice';
+import { useKeepAlive } from '../keep-alive';
 
 const AppHeaderUser = () => {
+  const { clearAll } = useKeepAlive();
   const dispatch = useDispatch<AppDispatch>();
   const user = useSelector((state: RootState) => state.user);
 
   const onLogout = () => {
     dispatch(clearUser());
     dispatch(clearAuth());
+
+    clearAll();
   };
 
   return (
@@ -53,10 +57,6 @@ const AppHeaderUser = () => {
           <DropdownMenuItem>
             用户名
             <DropdownMenuShortcut>{user.username}</DropdownMenuShortcut>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            登录账号
-            <DropdownMenuShortcut>{user.account}</DropdownMenuShortcut>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

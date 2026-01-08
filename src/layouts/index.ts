@@ -1,7 +1,8 @@
 export { default as AppWrapper } from './AppWrapper';
 
-export { AuthGuard, PermissionGuard, RedirectToFirstPermittedRoute } from './auth';
-export { RouteLoadingFallback } from './fallback';
+export { default as AuthGuard } from './auth/AuthGuard';
+export { default as PermissionGuard } from './auth/PermissionGuard';
+export { default as RouteLoadingFallback } from './fallback/RouteLoadingFallback';
 
 export {
   useKeepAlive,

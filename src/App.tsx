@@ -2,14 +2,10 @@ import { useEffect, useMemo } from 'react';
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router';
 
 import { Toaster } from './components/ui/sonner';
-import {
-  AppWrapper,
-  AuthGuard,
-  PermissionGuard,
-  RedirectToFirstPermittedRoute,
-  RouteLoadingFallback,
-} from './layouts';
-import { permissionRoutes, whiteRoutes } from './router';
+import { AppWrapper, AuthGuard, PermissionGuard, RouteLoadingFallback } from './layouts';
+import RedirectToFirstPermittedRoute from './layouts/auth/RedirectToFirstPermittedRoute';
+import Login from './pages/Login';
+import { permissionRoutes } from './router';
 import { preloadIdle } from './router/preloader';
 
 function App() {
@@ -35,7 +31,10 @@ function App() {
     });
 
     return createBrowserRouter([
-      ...whiteRoutes,
+      {
+        path: '/login',
+        element: <Login />,
+      },
       {
         path: '/',
         element: <AuthGuard />,
@@ -68,7 +67,7 @@ function App() {
   return (
     <>
       <RouterProvider router={routerInstance} />
-      <Toaster position='top-center' richColors />
+      <Toaster position="top-center" richColors />
     </>
   );
 }

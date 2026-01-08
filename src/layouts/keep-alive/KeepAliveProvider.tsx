@@ -168,6 +168,15 @@ function KeepAliveProvider({ children }: { children: ReactNode }) {
     [notifyTabs],
   );
 
+  const clearAll: KeepAliveContextType['clearAll'] = useCallback(() => {
+    cache.current.clear();
+    cacheTitle.current.clear();
+    cacheAliveCount.current = 0;
+
+    notifyTabs();
+    notifyOutlets();
+  }, [notifyOutlets, notifyTabs]);
+
   const subscribeTabs: KeepAliveContextType['subscribeTabs'] = useCallback(callback => {
     tabSubscribers.current.add(callback);
     return () => tabSubscribers.current.delete(callback);
@@ -195,6 +204,8 @@ function KeepAliveProvider({ children }: { children: ReactNode }) {
       refreshOutlet,
       setTitle,
 
+      clearAll,
+
       subscribeTabs,
       getTabVersion,
       subscribeOutlets,
@@ -208,6 +219,7 @@ function KeepAliveProvider({ children }: { children: ReactNode }) {
       removeOutlet,
       refreshOutlet,
       setTitle,
+      clearAll,
       subscribeTabs,
       getTabVersion,
       subscribeOutlets,

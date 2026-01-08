@@ -3,7 +3,7 @@ import { Suspense } from 'react';
 import AppHeaderLogo from './app-header/AppHeaderLogo';
 import AppHeaderMenu from './app-header/AppHeaderMenu';
 import AppHeaderUser from './app-header/AppHeaderUser';
-import { RouteLoadingFallback } from './fallback';
+import RouteLoadingFallback from './fallback/RouteLoadingFallback';
 import { KeepAliveOutlet, KeepAliveProvider, useKeepAliveActiveKey } from './keep-alive';
 
 const AppWrapper = () => {

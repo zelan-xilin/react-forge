@@ -1,12 +1,8 @@
-import type { ComponentType, ReactNode } from 'react';
+import type { ComponentType } from 'react';
 
 interface BaseRouterConfig {
   path: string;
   title: string | null;
-}
-
-export interface WhiteListRouterConfig extends BaseRouterConfig {
-  element: ReactNode;
 }
 
 export interface MenuRouterConfig extends BaseRouterConfig {

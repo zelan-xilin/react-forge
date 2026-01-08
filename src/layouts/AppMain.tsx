@@ -1,5 +1,6 @@
 import { Suspense } from 'react';
-import { RouteLoadingFallback } from './fallback';
+
+import RouteLoadingFallback from './fallback/RouteLoadingFallback';
 import { KeepAliveOutlet, useKeepAliveActiveKey } from './keep-alive';
 
 const AppMain = () => {

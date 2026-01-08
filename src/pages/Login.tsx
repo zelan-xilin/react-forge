@@ -31,7 +31,7 @@ const Login = () => {
     );
     dispatch(
       setAuth({
-        menus: resData?.permissions.paths,
+        paths: resData?.permissions.paths,
         actions: resData?.permissions.actions,
         hasUnrestrictedPermissions: resData?.user.isAdmin === IS_ADMIN.YES,
       }),

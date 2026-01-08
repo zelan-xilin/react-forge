@@ -1,6 +1,7 @@
 import { useEffect, useMemo } from 'react';
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router';
 
+import { Toaster } from './components/ui/sonner';
 import {
   AppWrapper,
   AuthGuard,
@@ -64,7 +65,12 @@ function App() {
     ]);
   }, []);
 
-  return <RouterProvider router={routerInstance} />;
+  return (
+    <>
+      <RouterProvider router={routerInstance} />
+      <Toaster position='top-center' richColors />
+    </>
+  );
 }
 
 export default App;

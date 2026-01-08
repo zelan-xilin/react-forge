@@ -1,4 +1,5 @@
 import axios, { type AxiosInstance } from 'axios';
+import { toast } from 'sonner';
 
 import { store } from '@/store';
 
@@ -24,15 +25,11 @@ request.interceptors.request.use(
 
 request.interceptors.response.use(
   response => {
-    const { data, status } = response;
-
-    if (status === 200) {
-      return data.data;
-    }
-
-    return Promise.reject(data);
+    return response.data;
   },
   error => {
+    toast.error(error.response?.data?.message || error.message || '请求出错，请稍后重试');
+
     return Promise.reject(error);
   },
 );

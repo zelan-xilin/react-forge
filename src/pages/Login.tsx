@@ -2,6 +2,8 @@ import { useActionState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router';
 
+import { loginApi } from '@/api/login';
+import { IS_ADMIN } from '@/api/login/types';
 import { Button } from '@/components/ui/button';
 import type { AppDispatch } from '@/store';
 import { setAuth } from '@/store/modules/authSlice';
@@ -13,24 +15,25 @@ const Login = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const [, loginAction, isPending] = useActionState(async () => {
-    const delay = Math.random() * 5000;
-    await new Promise(res => setTimeout(res, delay));
+    const { data: resData } = await loginApi({
+      username: 'admin',
+      password: '123456',
+    });
 
     dispatch(
       setUser({
-        id: '1',
-        token: 'token',
-        username: 'Admin',
-        account: '983867260000',
-        password: null,
+        token: resData?.token,
+        id: resData?.user.id,
+        username: resData?.user.username,
+        password: '123456',
         rememberPassword: false,
       }),
     );
     dispatch(
       setAuth({
-        menus: [],
-        buttons: [],
-        hasUnrestrictedPermissions: true,
+        menus: resData?.permissions.paths,
+        actions: resData?.permissions.actions,
+        hasUnrestrictedPermissions: resData?.user.isAdmin === IS_ADMIN.YES,
       }),
     );
 

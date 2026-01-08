@@ -3,15 +3,15 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { loadLocalState, saveLocalState } from '@/lib/storage';
 
 interface AuthState {
-  menus: string[];
-  buttons: string[];
+  paths: string[];
+  actions: { module: string; action: string }[];
   hasUnrestrictedPermissions: boolean;
 }
 
 const AUTH_KEY = 'auth';
 const initialState: AuthState = loadLocalState<AuthState>(AUTH_KEY) || {
-  menus: [],
-  buttons: [],
+  paths: [],
+  actions: [],
   hasUnrestrictedPermissions: false,
 };
 
@@ -24,8 +24,8 @@ const authSlice = createSlice({
       saveLocalState(AUTH_KEY, state);
     },
     clearAuth: state => {
-      state.menus = [];
-      state.buttons = [];
+      state.paths = [];
+      state.actions = [];
       state.hasUnrestrictedPermissions = false;
       saveLocalState(AUTH_KEY, state);
     },

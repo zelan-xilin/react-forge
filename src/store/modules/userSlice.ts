@@ -3,20 +3,18 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { loadLocalState, saveLocalState } from '@/lib/storage';
 
 interface UserState {
-  id: string | null;
-  username: string | null;
   token: string | null;
-  account: string | null;
+  id: number | null;
+  username: string | null;
   password: string | null;
   rememberPassword: boolean;
 }
 
 const USER_KEY = 'user';
 const initialState: UserState = loadLocalState<UserState>(USER_KEY) || {
+  token: null,
   id: null,
   username: null,
-  token: null,
-  account: null,
   password: null,
   rememberPassword: false,
 };

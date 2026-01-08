@@ -25,18 +25,14 @@ import {
 import type { AppDispatch, RootState } from '@/store';
 import { clearAuth } from '@/store/modules/authSlice';
 import { clearUser } from '@/store/modules/userSlice';
-import { useKeepAlive } from '../keep-alive';
 
 const AppHeaderUser = () => {
-  const { clearAll } = useKeepAlive();
   const dispatch = useDispatch<AppDispatch>();
   const user = useSelector((state: RootState) => state.user);
 
   const onLogout = () => {
     dispatch(clearUser());
     dispatch(clearAuth());
-
-    clearAll();
   };
 
   return (

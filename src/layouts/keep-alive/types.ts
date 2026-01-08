@@ -17,9 +17,6 @@ export interface KeepAliveContextType {
   refreshOutlet: (key: string, reset?: boolean) => void;
   setTitle: (key: string, title: string) => void;
 
-  /** 清除所有缓存 */
-  clearAll: () => void;
-
   /** Tab 订阅 */
   subscribeTabs: (callback: () => void) => () => void;
   getTabVersion: () => number;

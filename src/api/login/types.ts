@@ -1,4 +1,4 @@
-import type { IS_ADMIN, STATUS } from "../types";
+import type { IS_ADMIN, STATUS } from '../types';
 
 /**
  * 登录接口参数

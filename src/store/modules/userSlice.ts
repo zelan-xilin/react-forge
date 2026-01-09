@@ -29,7 +29,6 @@ const userSlice = createSlice({
     },
     clearUser: state => {
       state.id = null;
-      state.username = null;
       state.token = null;
       saveLocalState(USER_KEY, state);
     },

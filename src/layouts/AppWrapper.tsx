@@ -15,7 +15,7 @@ const AppWrapper = () => {
     <KeepAliveProvider>
       <div className="h-full flex">
         <aside className="flex-none w-90 border-r flex flex-col gap-0.5">
-          <div className="flex-none px-6 pt-4 box-border">
+          <div className="flex-none px-11 pt-4 box-border">
             <Logo className="size-10" />
           </div>
 
@@ -35,7 +35,7 @@ const AppWrapper = () => {
           </div>
         </aside>
 
-        <main className="flex-1 overflow-hidden">
+        <main className="flex-1 overflow-hidden pl-6 py-4 box-border">
           <Suspense fallback={<RouteLoadingFallback />}>
             <KeepAliveOutlet activeKey={activeKey} />
           </Suspense>

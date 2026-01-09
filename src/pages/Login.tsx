@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router';
 
 import { loginApi } from '@/api/login';
-import { IS_ADMIN } from '@/api/login/types';
+import { IS_ADMIN } from '@/api/types';
 import { Button } from '@/components/ui/button';
 import type { AppDispatch } from '@/store';
 import { setAuth } from '@/store/modules/authSlice';

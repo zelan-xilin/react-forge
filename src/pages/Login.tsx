@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ArrowRight, BadgeJapaneseYen } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,6 +13,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
+import Logo from '@/layouts/Logo';
 import type { AppDispatch, RootState } from '@/store';
 import { setAuth } from '@/store/modules/authSlice';
 import { setUser } from '@/store/modules/userSlice';
@@ -90,11 +91,9 @@ const Login = () => {
       </div>
 
       <div className="pr-32 flex-1 flex justify-center items-center overflow-auto">
-        <div className="border p-12 rounded-2xl w-1/3 min-w-120 flex flex-col gap-8">
+        <div className="border p-12 rounded-2xl w-1/3 min-w-120 flex flex-col gap-4">
           <div className="flex justify-center items-center">
-            <Button size="icon-xl" className="rounded-2xl cursor-default size-20">
-              <BadgeJapaneseYen className="size-10" />
-            </Button>
+            <Logo />
           </div>
 
           <div className="flex justify-center tracking-[0.15em] text-xl">

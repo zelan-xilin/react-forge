@@ -35,7 +35,7 @@ const AppWrapper = () => {
           </div>
         </aside>
 
-        <main className="flex-1 overflow-hidden pl-6 py-4 box-border">
+        <main className="flex-1 overflow-hidden">
           <Suspense fallback={<RouteLoadingFallback />}>
             <KeepAliveOutlet activeKey={activeKey} />
           </Suspense>

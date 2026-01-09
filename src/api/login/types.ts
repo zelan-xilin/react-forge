@@ -1,14 +1,4 @@
-export const IS_ADMIN = {
-  NO: 0,
-  YES: 1,
-} as const;
-export type IS_ADMIN = (typeof IS_ADMIN)[keyof typeof IS_ADMIN];
-
-export const USER_STATUS = {
-  DISABLE: 0,
-  ENABLE: 1,
-} as const;
-export type USER_STATUS = (typeof USER_STATUS)[keyof typeof USER_STATUS];
+import type { IS_ADMIN, STATUS } from "../types";
 
 /**
  * 登录接口参数
@@ -32,7 +22,7 @@ export interface LoginDto {
     createdAt: string | null;
     updatedBy: number | null;
     updatedAt: string | null;
-    status: USER_STATUS;
+    status: STATUS;
     isAdmin: IS_ADMIN;
   };
   permissions: {

@@ -18,7 +18,7 @@ const Summary = ({ data }: SummaryProps) => {
         return (
           <div
             key={item.key}
-            className="flex-1 border rounded-2xl p-4 box-border flex justify-between items-start border-border/65 bg-muted/65"
+            className="flex-1 border rounded-2xl p-4 box-border flex justify-between items-start border-border/65 bg-muted-1"
           >
             <div className="flex flex-col gap-2">
               <div className="text-xs text-muted-foreground">{item.label}</div>

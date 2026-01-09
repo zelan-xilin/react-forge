@@ -25,7 +25,7 @@ const Summary = ({ data }: SummaryProps) => {
               <div className="text-2xl font-semibold">{item.value.toLocaleString()}</div>
             </div>
 
-            <div className="border border-border/65 rounded-full bg-muted/75 p-2">
+            <div className="border border-border/65 rounded-full bg-muted p-2">
               <Icon className="size-4 text-muted-foreground" />
             </div>
           </div>

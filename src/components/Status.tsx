@@ -9,7 +9,7 @@ const Status = (props: StatusProps) => {
     : 'text-destructive border border-destructive/50 bg-destructive/10';
 
   return (
-    <div className={`py-0.5 px-2 border rounded-2xl ${className}`}>
+    <div className={`inline-flex py-0.5 px-2 border rounded-2xl ${className}`}>
       {value ? labels?.trueLabel || '启用' : labels?.falseLabel || '禁用'}
     </div>
   );

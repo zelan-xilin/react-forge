@@ -122,6 +122,7 @@ const Login = () => {
                       aria-invalid={fieldState.invalid}
                       placeholder="请输入账号"
                       autoComplete="off"
+                      className="h-12"
                     />
                     {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                   </Field>
@@ -143,6 +144,7 @@ const Login = () => {
                       placeholder="请输入密码"
                       autoComplete="off"
                       type="password"
+                      className="h-12"
                     />
                     {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                   </Field>

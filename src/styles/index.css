@@ -26,7 +26,7 @@
   --accent: oklch(0.44 0.12 190);
   --accent-foreground: oklch(0.98 0.01 190);
 
-  --destructive: oklch(0.75 0.22 30);
+  --destructive: oklch(0.7 0.19 22);
 
   --muted: oklch(0.23 0.015 275);
   --muted-1: oklch(0.21 0.015 275);
@@ -87,7 +87,6 @@
   --color-accent-foreground: var(--accent-foreground);
 
   --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
 
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
@@ -126,3 +125,4 @@ body,
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+m

@@ -58,9 +58,8 @@ const RoleEdit = (props: RoleEditProps) => {
     }
 
     form.reset({
-      name: '',
-      description: '',
-      ...data,
+      name: data?.name || '',
+      description: data?.description || '',
     });
   }, [open, data, form]);
   const onSubmit = async (formData: FormSchema) => {

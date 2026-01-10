@@ -48,6 +48,13 @@ const Table = <T,>(props: TableProps<T>) => {
             ))}
           </TableRow>
         ))}
+        {data.length === 0 && (
+          <TableRow>
+            <TableCell colSpan={columns.length} className="text-center text-muted-foreground">
+              暂无数据
+            </TableCell>
+          </TableRow>
+        )}
       </TableBody>
 
       {footer && (

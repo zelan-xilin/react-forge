@@ -43,7 +43,7 @@ export const rolePageApi = (params: RolePageParams): RequestPageDto<RoleDto[]> =
 /**
  * 角色名称唯一性校验接口
  */
-export const roleNameExistsApi = (name: string, roleId?: string): RequestDto<RoleNameExistsDto> => {
+export const roleNameExistsApi = (name: string, roleId?: number): RequestDto<RoleNameExistsDto> => {
   return request({
     url: '/roles/exists',
     method: 'get',
@@ -76,7 +76,7 @@ export const roleUpdateApi = (data: RoleAddOrUpdateParams): RequestDto<RoleDto> 
 /**
  * 角色删除接口
  */
-export const roleDeleteApi = (roleId: string) => {
+export const roleDeleteApi = (roleId: number) => {
   return request({
     url: `/roles/${roleId}`,
     method: 'delete',
@@ -86,7 +86,7 @@ export const roleDeleteApi = (roleId: string) => {
 /**
  * 角色 path 权限查询接口
  */
-export const roleAuthGetApi = (roleId: string): RequestDto<string[]> => {
+export const roleAuthGetApi = (roleId: number): RequestDto<string[]> => {
   return request({
     url: `/roles/${roleId}/path`,
     method: 'get',
@@ -96,7 +96,7 @@ export const roleAuthGetApi = (roleId: string): RequestDto<string[]> => {
 /**
  * 角色 path 权限保存接口
  */
-export const roleAuthSaveApi = (roleId: string, data: RolePathsParams) => {
+export const roleAuthSaveApi = (roleId: number, data: RolePathsParams) => {
   return request({
     url: `/roles/${roleId}/path`,
     method: 'put',

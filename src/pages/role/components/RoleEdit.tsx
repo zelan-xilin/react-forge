@@ -19,7 +19,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as z from 'zod';
 
-const getFormSchema = (roleId?: string) =>
+const getFormSchema = (roleId?: number) =>
   z.object({
     name: z
       .string('请输入角色名称')

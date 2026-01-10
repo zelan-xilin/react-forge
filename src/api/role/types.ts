@@ -11,7 +11,7 @@ export interface CountsDto {
  * 角色 page list 接口返回数据
  */
 export interface RoleDto {
-  id: string;
+  id: number;
   name: string;
   description: string;
   createdBy: string;
@@ -42,7 +42,7 @@ export interface RolePageParams {
  * 角色新增/编辑请求参数
  */
 export interface RoleAddOrUpdateParams {
-  id?: string;
+  id?: number;
   name: string;
   description?: string;
 }

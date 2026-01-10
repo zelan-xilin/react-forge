@@ -1,4 +1,3 @@
-
 export const MenuRouterConfigType = {
   FEATURE: 'feature',
   SETTING: 'setting',

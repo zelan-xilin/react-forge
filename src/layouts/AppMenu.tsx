@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router';
 
-import { menuRoutes } from '@/router';
+import { permissionRoutes } from '@/router';
 import type { MenuRouterConfigType } from '@/router/types';
 import type { RootState } from '@/store';
 
@@ -14,7 +14,7 @@ const AppMenu = ({ type }: AppMenuProps) => {
 
   return (
     <div className="flex flex-col gap-0.5">
-      {menuRoutes
+      {permissionRoutes
         .filter(
           r => (auth.hasUnrestrictedPermissions || auth.paths.includes(r.path)) && r.type === type,
         )

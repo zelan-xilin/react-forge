@@ -61,7 +61,7 @@ const Role = () => {
     },
     {
       key: 'associatedRoleCount',
-      label: '关联角色总数',
+      label: '已分配角色总数',
       value: 0,
       icon: Shield,
     },

@@ -59,7 +59,9 @@ const Table = <T,>(props: TableProps<T>) => {
 
       {footer && (
         <TableFooter>
-          <TableRow>{footer}</TableRow>
+          <TableRow>
+            <TableCell colSpan={columns.length}>{footer}</TableCell>
+          </TableRow>
         </TableFooter>
       )}
 

@@ -26,7 +26,7 @@ const AppUser = () => {
   };
 
   return (
-    <div className="flex justify-between items-center gap-4 px-5 py-4 box-border rounded-lg bg-muted">
+    <div className="flex justify-between items-center gap-4 px-5 py-3 box-border rounded-lg bg-muted">
       <div className="flex items-center gap-2">
         <User className="size-6" />
         <div>

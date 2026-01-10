@@ -54,14 +54,14 @@ const Role = () => {
       icon: ShieldUser,
     },
     {
-      key: 'associatedUserCount',
-      label: '关联用户总数',
+      key: 'associatedRoleCount',
+      label: '被关联角色总数',
       value: 0,
       icon: ShieldEllipsis,
     },
     {
-      key: 'associatedRoleCount',
-      label: '已分配角色总数',
+      key: 'associatedUserCount',
+      label: '被关联用户总数',
       value: 0,
       icon: Shield,
     },

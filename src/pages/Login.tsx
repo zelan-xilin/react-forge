@@ -113,12 +113,12 @@ const Login = () => {
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="form-rhf-demo-username" className="tracking-widest">
+                    <FieldLabel htmlFor="form-login-username" className="tracking-widest">
                       账号
                     </FieldLabel>
                     <Input
                       {...field}
-                      id="form-rhf-demo-username"
+                      id="form-login-username"
                       aria-invalid={fieldState.invalid}
                       placeholder="请输入账号"
                       autoComplete="off"
@@ -133,12 +133,12 @@ const Login = () => {
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="form-rhf-demo-password" className="tracking-widest">
+                    <FieldLabel htmlFor="form-login-password" className="tracking-widest">
                       密码
                     </FieldLabel>
                     <Input
                       {...field}
-                      id="form-rhf-demo-password"
+                      id="form-login-password"
                       aria-invalid={fieldState.invalid}
                       placeholder="请输入密码"
                       autoComplete="off"
@@ -155,13 +155,13 @@ const Login = () => {
                 render={({ field, fieldState }) => (
                   <Field orientation="horizontal" data-invalid={fieldState.invalid}>
                     <Checkbox
-                      id="form-rhf-checkbox-rememberPassword"
+                      id="form-login-rememberPassword"
                       name={field.name}
                       checked={field.value}
                       onCheckedChange={field.onChange}
                     />
                     <FieldLabel
-                      htmlFor="form-rhf-checkbox-rememberPassword"
+                      htmlFor="form-login-rememberPassword"
                       className="font-normal tracking-widest"
                     >
                       是否记住密码

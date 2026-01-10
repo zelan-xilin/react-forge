@@ -22,7 +22,7 @@ const PageWrapper = (props: PageWrapperProps) => {
 
         <div className="flex-none flex gap-2">
           {extra && <div>{extra}</div>}
-          {action && <div>{action}</div>}
+          {action && <div className="flex gap-2">{action}</div>}
         </div>
       </div>
 

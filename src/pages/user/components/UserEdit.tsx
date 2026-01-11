@@ -23,6 +23,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet';
+import { Textarea } from '@/components/ui/textarea';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -277,13 +278,12 @@ const UserEdit = (props: UserEditProps) => {
                     <FieldLabel htmlFor="form-user-description" className="tracking-widest">
                       描述
                     </FieldLabel>
-                    <Input
+                    <Textarea
                       {...field}
                       id="form-user-description"
                       aria-invalid={fieldState.invalid}
                       placeholder="请输入描述"
                       autoComplete="off"
-                      type="text"
                     />
                     {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                   </Field>

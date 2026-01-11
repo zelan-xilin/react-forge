@@ -120,6 +120,7 @@ const Login = () => {
                       {...field}
                       id="form-login-username"
                       aria-invalid={fieldState.invalid}
+                      aria-required="true"
                       placeholder="请输入账号"
                       autoComplete="off"
                       className="h-12"
@@ -141,6 +142,7 @@ const Login = () => {
                       {...field}
                       id="form-login-password"
                       aria-invalid={fieldState.invalid}
+                      aria-required="true"
                       placeholder="请输入密码"
                       autoComplete="off"
                       type="password"

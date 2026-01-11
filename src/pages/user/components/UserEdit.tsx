@@ -154,12 +154,14 @@ const UserEdit = (props: UserEditProps) => {
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel htmlFor="form-user-username" className="tracking-widest">
+                      <span className="text-destructive">*</span>
                       用户名称
                     </FieldLabel>
                     <Input
                       {...field}
                       id="form-user-username"
                       aria-invalid={fieldState.invalid}
+                      aria-required="true"
                       placeholder="请输入用户名称"
                       autoComplete="off"
                     />
@@ -175,12 +177,14 @@ const UserEdit = (props: UserEditProps) => {
                   render={({ field, fieldState }) => (
                     <Field data-invalid={fieldState.invalid}>
                       <FieldLabel htmlFor="form-user-password" className="tracking-widest">
+                        <span className="text-destructive">*</span>
                         密码
                       </FieldLabel>
                       <Input
                         {...field}
                         id="form-user-password"
                         aria-invalid={fieldState.invalid}
+                        aria-required="true"
                         placeholder="请输入密码"
                         autoComplete="off"
                         type="password"

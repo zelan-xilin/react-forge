@@ -97,12 +97,14 @@ const RoleEdit = (props: RoleEditProps) => {
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel htmlFor="form-role-name" className="tracking-widest">
+                      <span className="text-destructive">*</span>
                       角色名称
                     </FieldLabel>
                     <Input
                       {...field}
                       id="form-role-name"
                       aria-invalid={fieldState.invalid}
+                      aria-required="true"
                       placeholder="请输入角色名称"
                       autoComplete="off"
                     />

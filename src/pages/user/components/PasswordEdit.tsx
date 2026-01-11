@@ -98,12 +98,14 @@ const PasswordEdit = (props: PasswordEditProps) => {
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel htmlFor="form-user-password" className="tracking-widest">
+                      <span className="text-destructive">*</span>
                       密码
                     </FieldLabel>
                     <Input
                       {...field}
                       id="form-user-password"
                       aria-invalid={fieldState.invalid}
+                      aria-required="true"
                       placeholder="请输入密码"
                       autoComplete="off"
                       type="password"
@@ -119,12 +121,14 @@ const PasswordEdit = (props: PasswordEditProps) => {
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel htmlFor="form-user-confirm-password" className="tracking-widest">
+                      <span className="text-destructive">*</span>
                       确认密码
                     </FieldLabel>
                     <Input
                       {...field}
                       id="form-user-confirm-password"
                       aria-invalid={fieldState.invalid}
+                      aria-required="true"
                       placeholder="请输入密码"
                       autoComplete="off"
                       type="password"

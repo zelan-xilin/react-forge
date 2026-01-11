@@ -127,9 +127,7 @@ const UserEdit = (props: UserEditProps) => {
             isAdmin: (formData.isAdmin ?? IS_ADMIN.NO) as IS_ADMIN,
           });
 
-      if (data?.id) {
-        toast.success('编辑成功');
-      }
+      toast.success(data?.id ? '编辑成功' : '新增成功');
       onClose(res.data);
     } catch {
       // do nothing

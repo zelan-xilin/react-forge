@@ -2,10 +2,9 @@ import { roleCountApi, roleDeleteApi, rolePageApi } from '@/api/role';
 import type { RoleDto, RolePageParams } from '@/api/role/types';
 import Delete from '@/components/Delete';
 import PageWrapper from '@/components/PageWrapper';
-import Pagination from '@/components/Pagination';
 import SearchInput from '@/components/SearchInput';
 import Summary, { type SummaryVo } from '@/components/Summary';
-import Table, { type Column } from '@/components/Table';
+import Table, { TableExtra, type Column } from '@/components/Table';
 import { Button } from '@/components/ui/button';
 import { useKeepAliveRefresh } from '@/layouts';
 import { Plus, RotateCw, Shield, ShieldEllipsis, ShieldUser } from 'lucide-react';
@@ -175,19 +174,13 @@ const Role = () => {
       <Table
         columns={[...columns, ...actions]}
         data={data}
-        footer={
-          <div className="flex justify-between items-center">
-            <div>
-              显示&nbsp;{data.length}&nbsp;条，共&nbsp;{total}&nbsp;条记录
-            </div>
-
-            <Pagination
-              total={total}
-              current={query.page}
-              pageSize={query.pageSize}
-              onChange={(page, pageSize) => setQuery(prev => ({ ...prev, page, pageSize }))}
-            />
-          </div>
+        extra={
+          <TableExtra
+            dataLength={data.length}
+            total={total}
+            query={query}
+            setQuery={q => setQuery(prev => ({ ...prev, ...q }))}
+          />
         }
       />
 

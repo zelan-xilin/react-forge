@@ -42,9 +42,9 @@ export const permissionRoutes: PermissionRouterConfig[] = [
     type: MenuRouterConfigType.FEATURE,
   },
   {
-    path: '/seat',
-    lazy: () => import('@/pages/seat'),
-    title: '座位区域',
+    path: '/area',
+    lazy: () => import('@/pages/area'),
+    title: '区域管理',
     icon: LayoutTemplate,
     type: MenuRouterConfigType.FEATURE,
   },

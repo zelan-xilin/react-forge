@@ -17,7 +17,7 @@ import PageWrapper from '@/components/PageWrapper';
 import SearchInput from '@/components/SearchInput';
 import Status from '@/components/Status';
 import type { Column } from '@/components/Table';
-import Table from '@/components/Table';
+import Table, { TableExtra } from '@/components/Table';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useKeepAliveRefresh } from '@/layouts';
@@ -333,9 +333,15 @@ const Area = () => {
           key="resource"
           columns={[...resourceColumns, ...resourceActions]}
           data={resourceDataFilter}
+          extra={<TableExtra dataLength={resourceDataFilter.length} total={resourceData.length} />}
         />
       ) : (
-        <Table key="rule" columns={[...ruleColumns, ...ruleActions]} data={ruleDataFilter} />
+        <Table
+          key="rule"
+          columns={[...ruleColumns, ...ruleActions]}
+          data={ruleDataFilter}
+          extra={<TableExtra dataLength={ruleDataFilter.length} total={ruleData.length} />}
+        />
       )}
 
       <RuleEdit

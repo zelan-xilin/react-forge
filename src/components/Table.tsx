@@ -27,11 +27,11 @@ interface TableProps<T> {
 interface TableExtraProps {
   dataLength: number;
   total: number;
-  query: {
+  query?: {
     page: number;
     pageSize: number;
   };
-  setQuery: (query: { page: number; pageSize: number }) => void;
+  setQuery?: (query: { page: number; pageSize: number }) => void;
 }
 
 const TableExtra = (props: TableExtraProps) => {
@@ -43,14 +43,16 @@ const TableExtra = (props: TableExtraProps) => {
         显示&nbsp;{dataLength}&nbsp;条，共&nbsp;{total}&nbsp;条记录
       </div>
 
-      <div className="flex-1">
-        <Pagination
-          total={total}
-          current={query.page}
-          pageSize={query.pageSize}
-          onChange={(page, pageSize) => setQuery({ page, pageSize })}
-        />
-      </div>
+      {query && setQuery && (
+        <div className="flex-1">
+          <Pagination
+            total={total}
+            current={query.page}
+            pageSize={query.pageSize}
+            onChange={(page, pageSize) => setQuery({ page, pageSize })}
+          />
+        </div>
+      )}
     </div>
   );
 };

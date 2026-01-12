@@ -14,7 +14,7 @@ const PageWrapper = (props: PageWrapperProps) => {
 
   return (
     <div className="h-full py-4 box-border overflow-hidden flex flex-col gap-4">
-      <div className="flex-none px-6 flex justify-between items-end gap-4 pb-4 border-b">
+      <div className="flex-none px-6 flex justify-between items-end gap-4">
         <div className="flex-1 space-y-1">
           <div className="text-2xl font-semibold">{title}</div>
           {description && <div className="text-xs text-muted-foreground">{description}</div>}

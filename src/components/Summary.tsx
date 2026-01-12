@@ -18,14 +18,14 @@ const Summary = ({ data }: SummaryProps) => {
         return (
           <div
             key={item.key}
-            className="flex-1 border rounded-2xl p-4 box-border flex justify-between items-start border-border/65 bg-muted-1"
+            className="flex-1 border rounded-2xl p-4 box-border flex justify-between items-start bg-card"
           >
             <div className="flex flex-col gap-2">
               <div className="text-xs text-muted-foreground">{item.label}</div>
               <div className="text-2xl font-semibold">{item.value.toLocaleString()}</div>
             </div>
 
-            <div className="border border-border/65 rounded-full bg-muted p-2">
+            <div className="border rounded-full bg-card p-2">
               <Icon className="size-4 text-muted-foreground" />
             </div>
           </div>

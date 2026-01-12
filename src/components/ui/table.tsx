@@ -23,7 +23,7 @@ function TableBody({ className, ...props }: React.ComponentProps<'tbody'>) {
     <tbody
       data-slot="table-body"
       className={cn(
-        '[&_tr:last-child]:border-0 [&_tr:not(.data-no-hover)]:hover:bg-accent/20 [&_tr]:data-[state=selected]:bg-accent/50 bg-muted-1',
+        '[&_tr:last-child]:border-0 [&_tr:not(.data-no-hover)]:hover:bg-accent/20 [&_tr]:data-[state=selected]:bg-accent/50',
         className,
       )}
       {...props}
@@ -84,3 +84,4 @@ function TableCaption({ className, ...props }: React.ComponentProps<'caption'>) 
 }
 
 export { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow };
+

@@ -33,8 +33,8 @@ const Login = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: user.username ?? undefined,
-      password: user.password ?? undefined,
+      username: user.username ?? '',
+      password: user.password ?? '',
       rememberPassword: user.rememberPassword ?? false,
     },
   });
@@ -77,124 +77,110 @@ const Login = () => {
   };
 
   return (
-    <div className="flex h-full">
-      <div className="flex-none border-r py-2 pb-8 flex justify-end items-center [writing-mode:vertical-rl] text-9xl text-transparent [-webkit-text-stroke:1px_var(--color-muted-foreground)]">
-        {'login'
-          .toLocaleUpperCase()
-          .split('')
-          .reverse()
-          .map((ch, i) => (
-            <div key={i} className="rotate-180 select-none">
-              {ch}
-            </div>
-          ))}
-      </div>
+    <div className="flex h-full justify-center items-center overflow-auto">
+      <div className="w-2/7 min-w-120 flex flex-col gap-4">
+        <div className="flex justify-center items-center">
+          <Logo />
+        </div>
 
-      <div className="pr-32 flex-1 flex justify-center items-center overflow-auto">
-        <div className="border p-12 rounded-2xl w-1/3 min-w-120 flex flex-col gap-4">
-          <div className="flex justify-center items-center">
-            <Logo />
-          </div>
-
-          <div className="flex justify-center tracking-[0.15em] text-xl">
-            <div>
-              <div>欢迎回来</div>
-              <div className="relative">
-                <span>开始今日营业</span>
-                <span className="absolute h-1.5 bg-primary w-12 -bottom-2 right-0"></span>
-              </div>
+        <div className="flex justify-center tracking-[0.15em] text-xl">
+          <div>
+            <div>欢迎回来</div>
+            <div className="relative">
+              <span>开始今日营业</span>
+              <span className="absolute h-1.5 bg-primary w-12 -bottom-2 right-0"></span>
             </div>
           </div>
+        </div>
 
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            <FieldGroup>
-              <Controller
-                name="username"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="form-login-username" className="tracking-widest">
-                      账号
-                    </FieldLabel>
-                    <Input
-                      {...field}
-                      id="form-login-username"
-                      aria-invalid={fieldState.invalid}
-                      aria-required="true"
-                      placeholder="请输入账号"
-                      autoComplete="off"
-                      className="h-12"
-                    />
-                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-                  </Field>
-                )}
-              />
+        <form className="border p-12 rounded-2xl bg-card/80 backdrop-blur-xl shadow-2xl" onSubmit={form.handleSubmit(onSubmit)}>
+          <FieldGroup>
+            <Controller
+              name="username"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="form-login-username" className="tracking-widest">
+                    账号
+                  </FieldLabel>
+                  <Input
+                    {...field}
+                    id="form-login-username"
+                    aria-invalid={fieldState.invalid}
+                    aria-required="true"
+                    placeholder="请输入账号"
+                    autoComplete="off"
+                    className="h-12"
+                  />
+                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                </Field>
+              )}
+            />
 
-              <Controller
-                name="password"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="form-login-password" className="tracking-widest">
-                      密码
-                    </FieldLabel>
-                    <Input
-                      {...field}
-                      id="form-login-password"
-                      aria-invalid={fieldState.invalid}
-                      aria-required="true"
-                      placeholder="请输入密码"
-                      autoComplete="off"
-                      type="password"
-                      className="h-12"
-                    />
-                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-                  </Field>
-                )}
-              />
+            <Controller
+              name="password"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="form-login-password" className="tracking-widest">
+                    密码
+                  </FieldLabel>
+                  <Input
+                    {...field}
+                    id="form-login-password"
+                    aria-invalid={fieldState.invalid}
+                    aria-required="true"
+                    placeholder="请输入密码"
+                    autoComplete="off"
+                    type="password"
+                    className="h-12"
+                  />
+                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                </Field>
+              )}
+            />
 
-              <Controller
-                name="rememberPassword"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field orientation="horizontal" data-invalid={fieldState.invalid}>
-                    <Checkbox
-                      id="form-login-rememberPassword"
-                      name={field.name}
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                    <FieldLabel
-                      htmlFor="form-login-rememberPassword"
-                      className="font-normal tracking-widest"
-                    >
-                      是否记住密码
-                    </FieldLabel>
-                  </Field>
-                )}
-              />
+            <Controller
+              name="rememberPassword"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field orientation="horizontal" data-invalid={fieldState.invalid}>
+                  <Checkbox
+                    id="form-login-rememberPassword"
+                    name={field.name}
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                  <FieldLabel
+                    htmlFor="form-login-rememberPassword"
+                    className="font-normal tracking-widest"
+                  >
+                    是否记住密码
+                  </FieldLabel>
+                </Field>
+              )}
+            />
 
-              <Field>
-                <Button
-                  type="submit"
-                  size="lg"
-                  loading={isPending}
-                  className="text-lg tracking-[0.3em]"
-                >
-                  登录
-                  <ArrowRight className="size-5" />
-                </Button>
-              </Field>
-            </FieldGroup>
-          </form>
+            <Field>
+              <Button
+                type="submit"
+                size="lg"
+                loading={isPending}
+                className="text-lg tracking-[0.3em]"
+              >
+                登录
+                <ArrowRight className="size-5" />
+              </Button>
+            </Field>
+          </FieldGroup>
 
-          <Separator />
+          <Separator className='my-4' />
 
-          <div className="flex justify-between text-xs">
+          <div className="flex justify-between text-xs text-muted-foreground">
             <span>SYSTEM OPERATIONAL</span>
             <span>BUILD 0.0.1</span>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );

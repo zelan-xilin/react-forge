@@ -26,22 +26,18 @@ const AppUser = () => {
   };
 
   return (
-    <div className="flex justify-between items-center gap-4 px-5 py-3 box-border rounded-lg bg-muted">
+    <div className="flex justify-between items-center gap-4 px-5 py-3 box-border rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
       <div className="flex items-center gap-2">
         <User className="size-6" />
         <div>
           <div>{user.username}</div>
-          <div className="text-xs text-primary">值班中</div>
+          <div className="text-xs">值班中</div>
         </div>
       </div>
 
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button
-            size="icon"
-            variant="ghost"
-            className="text-destructive hover:text-destructive hover:bg-transparent"
-          >
+          <Button size="icon" variant="ghost">
             <LogOut className="size-6" />
           </Button>
         </AlertDialogTrigger>

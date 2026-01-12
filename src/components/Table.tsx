@@ -61,7 +61,7 @@ const Table = <T,>(props: TableProps<T>) => {
   const { columns, data, footer, caption, extra } = props;
 
   return (
-    <div className="rounded-2xl border bg-muted">
+    <div className="rounded-2xl border bg-card">
       <ShadcnTable>
         <TableHeader>
           <TableRow>

@@ -1,22 +1,6 @@
 import request from '@/lib/request';
 import type { RequestDto, RequestPageDto } from '../types';
-import type {
-  CountsDto,
-  UserAddOrUpdateParams,
-  UserDto,
-  UserNameExistsDto,
-  UserPageParams,
-} from './types';
-
-/**
- * 统计接口
- */
-export const userCountApi = (): RequestDto<CountsDto> => {
-  return request({
-    url: '/users/count',
-    method: 'get',
-  });
-};
+import type { UserAddOrUpdateParams, UserDto, UserNameExistsDto, UserPageParams } from './types';
 
 /**
  * 用户列表接口

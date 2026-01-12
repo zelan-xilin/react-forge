@@ -1,13 +1,4 @@
 /**
- * 统计接口返回数据
- */
-export interface CountsDto {
-  roleCount: number;
-  associatedUserCount: number;
-  associatedRoleCount: number;
-}
-
-/**
  * 角色 page list 接口返回数据
  */
 export interface RoleDto {

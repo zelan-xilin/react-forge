@@ -1,15 +1,14 @@
 import { STATUS } from '@/api/types';
-import { userCountApi, userDeleteApi, userPageApi } from '@/api/user';
+import { userDeleteApi, userPageApi } from '@/api/user';
 import type { UserDto, UserPageParams } from '@/api/user/types';
 import Delete from '@/components/Delete';
 import PageWrapper from '@/components/PageWrapper';
 import SearchInput from '@/components/SearchInput';
 import Status from '@/components/Status';
-import Summary, { type SummaryVo } from '@/components/Summary';
 import Table, { TableExtra, type Column } from '@/components/Table';
 import { Button } from '@/components/ui/button';
 import { useKeepAliveRefresh } from '@/layouts';
-import { Plus, RotateCw, Shield, ShieldEllipsis, ShieldUser } from 'lucide-react';
+import { Plus, RotateCw } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import PasswordEdit from './components/PasswordEdit';
@@ -47,53 +46,10 @@ const columns: Column<UserDto>[] = [
     field: 'description',
     render: item => item.description,
   },
-  {
-    title: '创建者',
-    field: 'createdByName',
-    render: item => item.createdByName,
-  },
-  {
-    title: '创建时间',
-    field: 'createdAt',
-    render: item => (item.createdAt ? new Date(item.createdAt).toLocaleString() : ''),
-  },
 ];
 
 const User = () => {
   const { refreshId, refreshLoading, onRefresh } = useKeepAliveRefresh('/user');
-
-  const [count, setCount] = useState<SummaryVo[]>([
-    {
-      key: 'userCount',
-      label: '用户总数',
-      value: 0,
-      icon: ShieldUser,
-    },
-    {
-      key: 'enableUserCount',
-      label: '启用用户总数',
-      value: 0,
-      icon: ShieldEllipsis,
-    },
-    {
-      key: 'associatedUserCount',
-      label: '关联角色的用户总数',
-      value: 0,
-      icon: Shield,
-    },
-  ]);
-  useEffect(() => {
-    void refreshId;
-
-    userCountApi().then(res => {
-      setCount(prevCount =>
-        prevCount.map(it => ({
-          ...it,
-          value: res.data ? res.data[it.key as keyof typeof res.data] : 0,
-        })),
-      );
-    });
-  }, [refreshId]);
 
   const [query, setQuery] = useState<UserPageParams>({ page: 1, pageSize: 10 });
   const [data, setData] = useState<UserDto[]>([]);
@@ -159,19 +115,6 @@ const User = () => {
       title="用户管理"
       description="配置系统用户及对应权限，保障数据安全访问。"
       extra={
-        <SearchInput
-          placeholder="搜索用户名称..."
-          onChange={val =>
-            setQuery(pre => ({
-              username: val,
-              page: 1,
-              pageSize: pre.pageSize,
-            }))
-          }
-        />
-      }
-      summary={<Summary data={count} />}
-      action={
         <>
           <Button onClick={() => setEditModal({ open: true, data: undefined })}>
             <Plus />
@@ -186,6 +129,18 @@ const User = () => {
             <RotateCw />
           </Button>
         </>
+      }
+      action={
+        <SearchInput
+          placeholder="搜索用户名称..."
+          onChange={val =>
+            setQuery(pre => ({
+              username: val,
+              page: 1,
+              pageSize: pre.pageSize,
+            }))
+          }
+        />
       }
     >
       <Table

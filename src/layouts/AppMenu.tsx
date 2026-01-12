@@ -11,12 +11,13 @@ const AppMenu = () => {
   return (
     <div className="flex flex-col gap-0.5">
       {permissionRoutes
-        .filter(
-          r => (auth.hasUnrestrictedPermissions || auth.paths.includes(r.path)),
-        )
+        .filter(r => auth.hasUnrestrictedPermissions || auth.paths.includes(r.path))
         .map(n => {
           const Icon = n.icon;
-          const isActiveClass = location.pathname === n.path ? 'bg-sidebar-primary! text-sidebar-primary-foreground!' : '';
+          const isActiveClass =
+            location.pathname === n.path
+              ? 'bg-sidebar-primary! text-sidebar-primary-foreground!'
+              : '';
 
           return (
             <Link

@@ -93,7 +93,10 @@ const Login = () => {
           </div>
         </div>
 
-        <form className="border p-12 rounded-2xl bg-card/80 backdrop-blur-xl shadow-2xl" onSubmit={form.handleSubmit(onSubmit)}>
+        <form
+          className="border p-12 rounded-2xl bg-card/80 backdrop-blur-xl shadow-2xl"
+          onSubmit={form.handleSubmit(onSubmit)}
+        >
           <FieldGroup>
             <Controller
               name="username"
@@ -174,7 +177,7 @@ const Login = () => {
             </Field>
           </FieldGroup>
 
-          <Separator className='my-4' />
+          <Separator className="my-4" />
 
           <div className="flex justify-between text-xs text-muted-foreground">
             <span>SYSTEM OPERATIONAL</span>

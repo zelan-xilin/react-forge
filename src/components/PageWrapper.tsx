@@ -5,12 +5,11 @@ interface PageWrapperProps {
   description?: string;
   extra?: ReactNode;
   action?: ReactNode;
-  summary?: ReactNode;
   children?: ReactNode;
   fixed?: boolean;
 }
 const PageWrapper = (props: PageWrapperProps) => {
-  const { title, description, extra, action, summary, children, fixed } = props;
+  const { title, description, extra, action, children, fixed } = props;
 
   return (
     <div className="h-full py-4 box-border overflow-hidden flex flex-col gap-4">
@@ -20,13 +19,14 @@ const PageWrapper = (props: PageWrapperProps) => {
           {description && <div className="text-xs text-muted-foreground">{description}</div>}
         </div>
 
-        <div className="flex-none flex gap-2">
-          {extra && <div>{extra}</div>}
-          {action && <div className="flex gap-2">{action}</div>}
-        </div>
+        <div className="flex-none flex gap-2">{extra && <div>{extra}</div>}</div>
       </div>
 
-      {summary && <div className="flex-none px-6">{summary}</div>}
+      {action && (
+        <div className="flex-none mx-6 flex gap-2 bg-card px-4 py-4 rounded-2xl border">
+          {action}
+        </div>
+      )}
 
       <div className={`flex-1 px-6 ${fixed ? 'overflow-hidden' : 'overflow-auto'}`}>{children}</div>
     </div>

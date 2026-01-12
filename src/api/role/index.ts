@@ -1,23 +1,12 @@
 import request from '@/lib/request';
 import type { RequestDto, RequestPageDto } from '../types';
 import type {
-  CountsDto,
   RoleAddOrUpdateParams,
   RoleDto,
   RoleNameExistsDto,
   RolePageParams,
   RolePathsParams,
 } from './types';
-
-/**
- * 统计接口
- */
-export const roleCountApi = (): RequestDto<CountsDto> => {
-  return request({
-    url: '/roles/count',
-    method: 'get',
-  });
-};
 
 /**
  * 角色列表接口

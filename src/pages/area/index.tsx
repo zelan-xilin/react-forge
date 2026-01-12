@@ -288,23 +288,6 @@ const Area = () => {
               ))}
             </TabsList>
           </Tabs>
-          {areaType === 'resource' ? (
-            <SearchInput
-              key="resource-search-input"
-              placeholder="搜索资源名称..."
-              onChange={name => setResourceQuery({ name })}
-            />
-          ) : (
-            <SearchInput
-              key="rule-search-input"
-              placeholder="搜索区域类型..."
-              onChange={areaType => setRuleQuery({ areaType })}
-            />
-          )}
-        </div>
-      }
-      action={
-        <>
           <Button
             onClick={() => {
               if (areaType === 'resource') {
@@ -325,7 +308,22 @@ const Area = () => {
           >
             <RotateCw />
           </Button>
-        </>
+        </div>
+      }
+      action={
+        areaType === 'resource' ? (
+          <SearchInput
+            key="resource-search-input"
+            placeholder="搜索资源名称..."
+            onChange={name => setResourceQuery({ name })}
+          />
+        ) : (
+          <SearchInput
+            key="rule-search-input"
+            placeholder="搜索区域类型..."
+            onChange={areaType => setRuleQuery({ areaType })}
+          />
+        )
       }
     >
       {areaType === 'resource' ? (

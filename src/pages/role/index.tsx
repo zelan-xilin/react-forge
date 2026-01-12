@@ -1,13 +1,12 @@
-import { roleCountApi, roleDeleteApi, rolePageApi } from '@/api/role';
+import { roleDeleteApi, rolePageApi } from '@/api/role';
 import type { RoleDto, RolePageParams } from '@/api/role/types';
 import Delete from '@/components/Delete';
 import PageWrapper from '@/components/PageWrapper';
 import SearchInput from '@/components/SearchInput';
-import Summary, { type SummaryVo } from '@/components/Summary';
 import Table, { TableExtra, type Column } from '@/components/Table';
 import { Button } from '@/components/ui/button';
 import { useKeepAliveRefresh } from '@/layouts';
-import { Plus, RotateCw, Shield, ShieldEllipsis, ShieldUser } from 'lucide-react';
+import { Plus, RotateCw } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import AuthEdit from './components/AuthEdit';
@@ -30,53 +29,10 @@ const columns: Column<RoleDto>[] = [
     field: 'description',
     render: item => item.description,
   },
-  {
-    title: '创建者',
-    field: 'createdByName',
-    render: item => item.createdByName,
-  },
-  {
-    title: '创建时间',
-    field: 'createdAt',
-    render: item => (item.createdAt ? new Date(item.createdAt).toLocaleString() : ''),
-  },
 ];
 
 const Role = () => {
   const { refreshId, refreshLoading, onRefresh } = useKeepAliveRefresh('/role');
-
-  const [count, setCount] = useState<SummaryVo[]>([
-    {
-      key: 'roleCount',
-      label: '角色总数',
-      value: 0,
-      icon: ShieldUser,
-    },
-    {
-      key: 'associatedRoleCount',
-      label: '被关联角色总数',
-      value: 0,
-      icon: ShieldEllipsis,
-    },
-    {
-      key: 'associatedUserCount',
-      label: '被关联用户总数',
-      value: 0,
-      icon: Shield,
-    },
-  ]);
-  useEffect(() => {
-    void refreshId;
-
-    roleCountApi().then(res => {
-      setCount(prevCount =>
-        prevCount.map(it => ({
-          ...it,
-          value: res.data ? res.data[it.key as keyof typeof res.data] : 0,
-        })),
-      );
-    });
-  }, [refreshId]);
 
   const [query, setQuery] = useState<RolePageParams>({ page: 1, pageSize: 10 });
   const [data, setData] = useState<RoleDto[]>([]);
@@ -142,19 +98,6 @@ const Role = () => {
       title="角色管理"
       description="配置系统用户角色及对应权限，保障数据安全访问。"
       extra={
-        <SearchInput
-          placeholder="搜索角色名称..."
-          onChange={val =>
-            setQuery(pre => ({
-              name: val,
-              page: 1,
-              pageSize: pre.pageSize,
-            }))
-          }
-        />
-      }
-      summary={<Summary data={count} />}
-      action={
         <>
           <Button onClick={() => setEditModal({ open: true, data: undefined })}>
             <Plus />
@@ -169,6 +112,18 @@ const Role = () => {
             <RotateCw />
           </Button>
         </>
+      }
+      action={
+        <SearchInput
+          placeholder="搜索角色名称..."
+          onChange={val =>
+            setQuery(pre => ({
+              name: val,
+              page: 1,
+              pageSize: pre.pageSize,
+            }))
+          }
+        />
       }
     >
       <Table

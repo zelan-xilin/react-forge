@@ -1,15 +1,6 @@
 import type { IS_ADMIN, STATUS } from '../types';
 
 /**
- * 统计接口返回数据
- */
-export interface CountsDto {
-  userCount: number;
-  enableUserCount: number;
-  associatedUserCount: number;
-}
-
-/**
  * 用户 page list 接口返回数据
  */
 export interface UserDto {

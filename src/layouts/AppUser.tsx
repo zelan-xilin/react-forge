@@ -1,3 +1,6 @@
+import dobby from '@/assets/images/dobby.jpg';
+import ponyo from '@/assets/images/ponyo.jpg';
+import threeTreasures from '@/assets/images/threeTreasures.jpg';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -9,13 +12,16 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import type { AppDispatch, RootState } from '@/store';
 import { clearAuth } from '@/store/modules/authSlice';
 import { clearUser } from '@/store/modules/userSlice';
-import { LogOut, User } from 'lucide-react';
+import { LogOut } from 'lucide-react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+const logoImages = [dobby, ponyo, threeTreasures];
 const AppUser = () => {
   const dispatch = useDispatch<AppDispatch>();
   const user = useSelector((state: RootState) => state.user);
@@ -25,10 +31,15 @@ const AppUser = () => {
     dispatch(clearAuth());
   };
 
+  const [randomIndex] = useState(() => Math.floor(Math.random() * logoImages.length));
+
   return (
     <div className="flex justify-between items-center gap-4 px-5 py-3 box-border rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
       <div className="flex items-center gap-2">
-        <User className="size-6" />
+        <Avatar className="size-14">
+          <AvatarImage src={logoImages[randomIndex]} alt="@dobby@ponyo@threeTreasures" />
+          <AvatarFallback>@dobby@ponyo@threeTreasures</AvatarFallback>
+        </Avatar>
         <div>
           <div>{user.username}</div>
           <div className="text-xs">值班中</div>

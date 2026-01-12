@@ -18,7 +18,7 @@ const SearchInput = (props: SearchInputProps) => {
   }, [deferredSearchText]);
 
   return (
-    <InputGroup>
+    <InputGroup className="w-auto">
       <InputGroupInput onChange={e => setSearchText(e.target.value)} {...rest} />
 
       <InputGroupAddon>

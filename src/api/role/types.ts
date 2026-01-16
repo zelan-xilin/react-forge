@@ -4,13 +4,13 @@
 export interface RoleDto {
   id: number;
   name: string;
-  description: string;
-  createdBy: string;
+  description: string | null;
+  createdBy: number;
   createdByName: string;
   createdAt: string;
-  updatedBy: string;
-  updatedByName: string;
-  updatedAt: string;
+  updatedBy: number | null;
+  updatedByName: string | null;
+  updatedAt: string | null;
 }
 
 /**
@@ -35,7 +35,7 @@ export interface RolePageParams {
 export interface RoleAddOrUpdateParams {
   id?: number;
   name: string;
-  description?: string;
+  description?: string | null;
 }
 
 /**

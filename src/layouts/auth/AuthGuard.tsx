@@ -1,7 +1,6 @@
+import type { RootState } from '@/store';
 import { useSelector } from 'react-redux';
 import { Navigate, Outlet, useLocation } from 'react-router';
-
-import type { RootState } from '@/store';
 
 const AuthGuard = () => {
   const location = useLocation();

@@ -1,75 +1,60 @@
+import LoadingFallback from '@/components/LoadingFallback';
 import {
-  ChartSpline,
-  Laugh,
-  LayoutDashboard,
-  LayoutTemplate,
-  MonitorCog,
-  SlidersHorizontal,
-  UserRound,
-} from 'lucide-react';
-import type { ComponentType } from 'react';
-import { matchPath } from 'react-router';
+  AuthGuard,
+  PermissionGuard,
+  RedirectToFirstAccessibleRoute,
+  Wrapper,
+} from '@/layouts';
+import Login from '@/pages/login';
+import { createBrowserRouter } from 'react-router';
+import { lazyRoutes } from './lazy-route';
 
-interface PermissionRouterConfig {
-  path: string;
-  title: string | null;
-  icon: ComponentType<{ className?: string }>;
+const routerInstanceChildren = lazyRoutes.map(r => {
+  return {
+    path: r.path,
+    lazy: async () => {
+      const mod = await r.lazy();
 
-  lazy: () => Promise<{
-    default: ComponentType<unknown>;
-    ErrorBoundary?: ComponentType<unknown>;
-    loader?: () => Promise<unknown>;
-    action?: () => Promise<unknown>;
-    shouldRevalidate?: () => boolean;
-  }>;
-}
+      return {
+        Component: mod.default,
+        ErrorBoundary: mod.ErrorBoundary,
+        loader: mod.loader,
+        action: mod.action,
+        shouldRevalidate: mod.shouldRevalidate,
+      };
+    },
+  };
+});
 
-export const permissionRoutes: PermissionRouterConfig[] = [
+export const routerInstance = createBrowserRouter([
   {
-    path: '/dashboard',
-    lazy: () => import('@/pages/dashboard'),
-    title: '概览',
-    icon: LayoutDashboard,
+    path: '/login',
+    element: <Login />,
   },
   {
-    path: '/cashier',
-    lazy: () => import('@/pages/cashier'),
-    title: '收银台',
-    icon: Laugh,
+    path: '/',
+    element: <AuthGuard />,
+    hydrateFallbackElement: <LoadingFallback />,
+    children: [
+      {
+        element: <Wrapper />,
+        children: [
+          {
+            element: <PermissionGuard />,
+            children: [
+              {
+                index: true,
+                element: <RedirectToFirstAccessibleRoute />,
+              },
+              ...routerInstanceChildren,
+              {
+                path: '*',
+                element: <RedirectToFirstAccessibleRoute />,
+              },
+            ],
+          },
+        ],
+      },
+    ],
   },
-  {
-    path: '/area',
-    lazy: () => import('@/pages/area'),
-    title: '区域管理',
-    icon: LayoutTemplate,
-  },
-  {
-    path: '/tea',
-    lazy: () => import('@/pages/tea'),
-    title: '茶水配置',
-    icon: SlidersHorizontal,
-  },
-  {
-    path: '/report',
-    lazy: () => import('@/pages/report'),
-    title: '数据报表',
-    icon: ChartSpline,
-  },
-
-  {
-    path: '/user',
-    lazy: () => import('@/pages/user'),
-    title: '用户管理',
-    icon: UserRound,
-  },
-  {
-    path: '/role',
-    lazy: () => import('@/pages/role'),
-    title: '角色管理',
-    icon: MonitorCog,
-  },
-];
-
-export const isExactPathMatch = (pattern: string, pathname: string) => {
-  return matchPath({ path: pattern, end: true }, pathname) !== null;
-};
+]);

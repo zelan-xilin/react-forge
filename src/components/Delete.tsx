@@ -12,19 +12,24 @@ import {
 
 interface DeleteProps {
   children: React.ReactNode;
+  disabled?: boolean;
   onDelete: () => void;
 }
 const Delete = (props: DeleteProps) => {
-  const { children, onDelete } = props;
+  const { children, disabled, onDelete } = props;
 
   return (
     <AlertDialog>
-      <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
+      <AlertDialogTrigger asChild disabled={disabled}>
+        {children}
+      </AlertDialogTrigger>
 
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>是否确定删除数据？</AlertDialogTitle>
-          <AlertDialogDescription>删除操作将不可恢复，请谨慎操作。</AlertDialogDescription>
+          <AlertDialogDescription>
+            删除操作将不可恢复，请谨慎操作。
+          </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>取消</AlertDialogCancel>

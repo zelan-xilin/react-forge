@@ -1,4 +1,4 @@
-import type { IS_ADMIN, STATUS } from '../types';
+import type { IS_ADMIN, STATUS } from '@/assets/enum';
 
 /**
  * 登录接口参数
@@ -16,14 +16,14 @@ export interface LoginDto {
   user: {
     id: number;
     username: string;
+    status: STATUS;
+    isAdmin: IS_ADMIN;
     roleId: number | null;
-    description: string;
+    description: string | null;
     createdBy: number | null;
     createdAt: string | null;
     updatedBy: number | null;
     updatedAt: string | null;
-    status: STATUS;
-    isAdmin: IS_ADMIN;
   };
   permissions: {
     actions: { module: string; action: string }[];

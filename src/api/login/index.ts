@@ -5,10 +5,10 @@ import type { LoginDto, LoginParams } from './types';
 /**
  * 登录接口
  */
-export const loginApi = (params: LoginParams): RequestDto<LoginDto> => {
+export const loginApi = (data: LoginParams): RequestDto<LoginDto> => {
   return request({
     url: '/auth/login',
     method: 'post',
-    data: params,
+    data,
   });
 };

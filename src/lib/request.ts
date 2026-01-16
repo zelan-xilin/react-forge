@@ -1,7 +1,6 @@
+import { store } from '@/store';
 import axios, { type AxiosInstance } from 'axios';
 import { toast } from 'sonner';
-
-import { store } from '@/store';
 
 const request: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || '',
@@ -28,7 +27,9 @@ request.interceptors.response.use(
     return response.data;
   },
   error => {
-    toast.error(error.response?.data?.message || error.message || '请求出错，请稍后重试');
+    toast.error(
+      error.response?.data?.message || error.message || '请求出错，请稍后重试',
+    );
 
     return Promise.reject(error);
   },

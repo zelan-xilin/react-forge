@@ -1,4 +1,4 @@
-import type { IS_ADMIN, STATUS } from '../types';
+import type { IS_ADMIN, STATUS } from '@/assets/enum';
 
 /**
  * 用户 page list 接口返回数据
@@ -6,18 +6,18 @@ import type { IS_ADMIN, STATUS } from '../types';
 export interface UserDto {
   id: number;
   username: string;
-  roleId: number;
-  roleName: string;
+  roleId: number | null;
+  roleName: string | null;
   status: STATUS;
-  description: string;
-  createdBy: string;
+  description: string | null;
+  createdBy: number;
   createdByName: string;
   createdAt: string;
-  updatedBy: string;
-  updatedByName: string;
-  updatedAt: string;
+  updatedBy: number | null;
+  updatedByName: string | null;
+  updatedAt: string | null;
   isAdmin: IS_ADMIN;
-  phone?: string;
+  phone: string | null;
 }
 
 /**
@@ -43,9 +43,9 @@ export interface UserAddOrUpdateParams {
   id?: number;
   username: string;
   password?: string;
-  roleId?: number;
+  roleId?: number | null;
   status?: STATUS;
-  description?: string;
+  description?: string | null;
   isAdmin?: IS_ADMIN;
-  phone?: string;
+  phone?: string | null;
 }

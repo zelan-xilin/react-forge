@@ -1,115 +1,75 @@
 import request from '@/lib/request';
-import type { RequestDto } from '../types';
-import type {
-  AreaPricingRuleAddOrUpdateParams,
-  AreaPricingRuleDto,
-  AreaResourceAddOrUpdateParams,
-  AreaResourceDto,
-  AreaResourceNameExistsDto,
-} from './types';
+import type { RequestDto, RequestPageDto } from '../types';
+import type { AreaDto, AreaNameExistsDto, AreaPageParams } from './types';
 
 /**
- * 区域收费规则列表接口
+ * 区域新增接口
  */
-export const areaPricingRuleListApi = (): RequestDto<AreaPricingRuleDto[]> => {
+export const areaAddApi = (data: Omit<AreaDto, 'id'>) => {
   return request({
-    url: '/areas/rule/list',
-    method: 'get',
-  });
-};
-
-/**
- * 区域收费规则新增接口
- */
-export const areaPricingRuleAddApi = (
-  data: AreaPricingRuleAddOrUpdateParams,
-): RequestDto<AreaPricingRuleDto> => {
-  return request({
-    url: '/areas/rule',
+    url: '/areas',
     method: 'post',
     data,
   });
 };
 
 /**
- * 区域收费规则编辑接口
+ * 区域更新接口
  */
-export const areaPricingRuleUpdateApi = (
-  data: AreaPricingRuleAddOrUpdateParams,
-): RequestDto<AreaPricingRuleDto> => {
+export const areaUpdateApi = (data: Partial<AreaDto>) => {
   return request({
-    url: `/areas/rule/${data.id}`,
+    url: `/areas/${data.id}`,
     method: 'put',
     data,
   });
 };
 
 /**
- * 区域收费规则删除接口
+ * 区域删除接口
  */
-export const areaPricingRuleDeleteApi = (areaPricingRuleId: number) => {
+export const areaDeleteApi = (areaId: number) => {
   return request({
-    url: `/areas/rule/${areaPricingRuleId}`,
+    url: `/areas/${areaId}`,
     method: 'delete',
   });
 };
 
 /**
- * 区域资源列表接口
+ * 分页查询区域接口
  */
-export const areaResourceListApi = (): RequestDto<AreaResourceDto[]> => {
+export const areaPageApi = (
+  params: AreaPageParams,
+): RequestPageDto<AreaDto[]> => {
   return request({
-    url: '/areas/resource/list',
+    url: '/areas/page',
+    method: 'get',
+    params,
+  });
+};
+
+/**
+ * 区域list接口
+ */
+export const areaListApi = (): RequestDto<AreaDto[]> => {
+  return request({
+    url: '/areas/list',
     method: 'get',
   });
 };
 
 /**
- * 区域资源名称唯一性校验接口
+ * 区域名称唯一性校验接口
  */
-export const areaResourceNameExistsApi = (
+export const areaNameExistsApi = (
   name: string,
-  areaResourceId?: number,
-): RequestDto<AreaResourceNameExistsDto> => {
+  areaId?: number,
+): RequestDto<AreaNameExistsDto> => {
   return request({
-    url: '/areas/resource/exists',
+    url: '/areas/exists',
     method: 'get',
-    params: { name, areaResourceId },
-  });
-};
-
-/**
- * 区域资源新增接口
- */
-export const areaResourceAddApi = (
-  data: AreaResourceAddOrUpdateParams,
-): RequestDto<AreaResourceDto> => {
-  return request({
-    url: '/areas/resource',
-    method: 'post',
-    data,
-  });
-};
-
-/**
- * 区域资源编辑接口
- */
-export const areaResourceUpdateApi = (
-  data: AreaResourceAddOrUpdateParams,
-): RequestDto<AreaResourceDto> => {
-  return request({
-    url: `/areas/resource/${data.id}`,
-    method: 'put',
-    data,
-  });
-};
-
-/**
- * 区域资源删除接口
- */
-export const areaResourceDeleteApi = (areaResourceId: number) => {
-  return request({
-    url: `/areas/resource/${areaResourceId}`,
-    method: 'delete',
+    params: {
+      name,
+      areaId,
+    },
   });
 };

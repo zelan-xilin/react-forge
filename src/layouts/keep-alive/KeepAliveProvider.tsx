@@ -1,5 +1,4 @@
 import { type ReactNode, useCallback, useMemo, useRef } from 'react';
-
 import type { KeepAliveCache, KeepAliveContextType } from './types';
 import { KeepAliveContext } from './useKeepAlive';
 
@@ -168,21 +167,27 @@ function KeepAliveProvider({ children }: { children: ReactNode }) {
     [notifyTabs],
   );
 
-  const subscribeTabs: KeepAliveContextType['subscribeTabs'] = useCallback(callback => {
-    tabSubscribers.current.add(callback);
-    return () => tabSubscribers.current.delete(callback);
-  }, []);
-  const getTabVersion: KeepAliveContextType['getTabVersion'] = useCallback(() => {
-    return tabVersion.current;
-  }, []);
+  const subscribeTabs: KeepAliveContextType['subscribeTabs'] = useCallback(
+    callback => {
+      tabSubscribers.current.add(callback);
+      return () => tabSubscribers.current.delete(callback);
+    },
+    [],
+  );
+  const getTabVersion: KeepAliveContextType['getTabVersion'] =
+    useCallback(() => {
+      return tabVersion.current;
+    }, []);
 
-  const subscribeOutlets: KeepAliveContextType['subscribeOutlets'] = useCallback(callback => {
-    outletSubscribers.current.add(callback);
-    return () => outletSubscribers.current.delete(callback);
-  }, []);
-  const getOutletVersion: KeepAliveContextType['getOutletVersion'] = useCallback(() => {
-    return outletVersion.current;
-  }, []);
+  const subscribeOutlets: KeepAliveContextType['subscribeOutlets'] =
+    useCallback(callback => {
+      outletSubscribers.current.add(callback);
+      return () => outletSubscribers.current.delete(callback);
+    }, []);
+  const getOutletVersion: KeepAliveContextType['getOutletVersion'] =
+    useCallback(() => {
+      return outletVersion.current;
+    }, []);
 
   const contextValue = useMemo<KeepAliveContextType>(
     () => ({
@@ -215,7 +220,11 @@ function KeepAliveProvider({ children }: { children: ReactNode }) {
     ],
   );
 
-  return <KeepAliveContext.Provider value={contextValue}>{children}</KeepAliveContext.Provider>;
+  return (
+    <KeepAliveContext.Provider value={contextValue}>
+      {children}
+    </KeepAliveContext.Provider>
+  );
 }
 
 export default KeepAliveProvider;

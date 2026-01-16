@@ -8,7 +8,7 @@ export const loadLocalState = <T>(key: string): T | undefined => {
 
     return JSON.parse(serializedState) as T;
   } catch (err) {
-    console.error('storage -> loadLocalState: ', err);
+    console.error('解析 loadLocalState 失败: ', err);
     return undefined;
   }
 };
@@ -18,6 +18,6 @@ export const saveLocalState = <T>(key: string, state: T) => {
     const serializedState = JSON.stringify(state);
     localStorage.setItem(key, serializedState);
   } catch (err) {
-    console.error('storage -> saveLocalState: ', err);
+    console.error('保存 saveLocalState 失败: ', err);
   }
 };

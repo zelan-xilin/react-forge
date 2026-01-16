@@ -21,7 +21,9 @@ export const roleListApi = (): RequestDto<RoleDto[]> => {
 /**
  * 角色分页接口
  */
-export const rolePageApi = (params: RolePageParams): RequestPageDto<RoleDto[]> => {
+export const rolePageApi = (
+  params: RolePageParams,
+): RequestPageDto<RoleDto[]> => {
   return request({
     url: '/roles/page',
     method: 'get',
@@ -32,7 +34,10 @@ export const rolePageApi = (params: RolePageParams): RequestPageDto<RoleDto[]> =
 /**
  * 角色名称唯一性校验接口
  */
-export const roleNameExistsApi = (name: string, roleId?: number): RequestDto<RoleNameExistsDto> => {
+export const roleNameExistsApi = (
+  name: string,
+  roleId?: number,
+): RequestDto<RoleNameExistsDto> => {
   return request({
     url: '/roles/exists',
     method: 'get',
@@ -43,7 +48,9 @@ export const roleNameExistsApi = (name: string, roleId?: number): RequestDto<Rol
 /**
  * 角色新增接口
  */
-export const roleAddApi = (data: RoleAddOrUpdateParams): RequestDto<RoleDto> => {
+export const roleAddApi = (
+  data: RoleAddOrUpdateParams,
+): RequestDto<RoleDto> => {
   return request({
     url: '/roles',
     method: 'post',
@@ -54,7 +61,9 @@ export const roleAddApi = (data: RoleAddOrUpdateParams): RequestDto<RoleDto> => 
 /**
  * 角色编辑接口
  */
-export const roleUpdateApi = (data: RoleAddOrUpdateParams): RequestDto<RoleDto> => {
+export const roleUpdateApi = (
+  data: RoleAddOrUpdateParams,
+): RequestDto<RoleDto> => {
   return request({
     url: `/roles/${data.id}`,
     method: 'put',

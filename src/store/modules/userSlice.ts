@@ -1,6 +1,5 @@
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-
 import { loadLocalState, saveLocalState } from '@/lib/storage';
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 interface UserState {
   token: string | null;
@@ -10,7 +9,7 @@ interface UserState {
   rememberPassword: boolean;
 }
 
-const USER_KEY = 'user';
+const USER_KEY = `${import.meta.env.VITE_STORE_PREFIX}_user`;
 const initialState: UserState = loadLocalState<UserState>(USER_KEY) || {
   token: null,
   id: null,
@@ -28,8 +27,8 @@ const userSlice = createSlice({
       saveLocalState(USER_KEY, state);
     },
     clearUser: state => {
-      state.id = null;
       state.token = null;
+      state.id = null;
       saveLocalState(USER_KEY, state);
     },
   },

@@ -1,6 +1,6 @@
-import { permissionRoutes } from '.';
+import { lazyRoutes } from './lazy-route';
 
-const registry = new Map(permissionRoutes.map(r => [r.path, r.lazy]));
+const registry = new Map(lazyRoutes.map(r => [r.path, r.lazy]));
 const loaded = new Set<string>();
 const loading = new Set<string>();
 
@@ -20,7 +20,7 @@ const preload = (path: string) => {
   loading.add(path);
   lazy()
     .then(() => loaded.add(path))
-    .catch(err => console.error(`preloader -> preload: `, err))
+    .catch(err => console.error(`加载路由文件失败: `, err))
     .finally(() => loading.delete(path));
 };
 
@@ -30,7 +30,7 @@ const preload = (path: string) => {
 const scheduleIdleCallback = (
   callback: (deadline?: IdleDeadline) => void,
   timeout = 2000,
-  fallbackDelay = 200,
+  fallbackDelay = 500,
 ) => {
   if ('requestIdleCallback' in window) {
     window.requestIdleCallback(callback, { timeout });
@@ -38,8 +38,8 @@ const scheduleIdleCallback = (
     setTimeout(() => callback(), fallbackDelay);
   }
 };
-const preloadBatchIdle = async (batchSize = 2) => {
-  const queue = [...permissionRoutes];
+const preloadBatchIdle = (batchSize = 2) => {
+  const queue = [...lazyRoutes];
 
   const loadNextChunk = (deadline?: IdleDeadline) => {
     if (!queue.length) {

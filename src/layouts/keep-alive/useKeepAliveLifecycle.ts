@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router';
-
 import { useKeepAlive } from './useKeepAlive';
 
 type Options = {

@@ -1,6 +1,5 @@
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-
 import { loadLocalState, saveLocalState } from '@/lib/storage';
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 interface AuthState {
   paths: string[];
@@ -8,7 +7,7 @@ interface AuthState {
   hasUnrestrictedPermissions: boolean;
 }
 
-const AUTH_KEY = 'auth';
+const AUTH_KEY = `${import.meta.env.VITE_STORE_PREFIX}_auth`;
 const initialState: AuthState = loadLocalState<AuthState>(AUTH_KEY) || {
   paths: [],
   actions: [],

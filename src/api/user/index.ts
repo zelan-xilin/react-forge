@@ -1,6 +1,11 @@
 import request from '@/lib/request';
 import type { RequestDto, RequestPageDto } from '../types';
-import type { UserAddOrUpdateParams, UserDto, UserNameExistsDto, UserPageParams } from './types';
+import type {
+  UserAddOrUpdateParams,
+  UserDto,
+  UserNameExistsDto,
+  UserPageParams,
+} from './types';
 
 /**
  * 用户列表接口
@@ -15,7 +20,9 @@ export const userListApi = (): RequestDto<UserDto[]> => {
 /**
  * 用户分页接口
  */
-export const userPageApi = (params: UserPageParams): RequestPageDto<UserDto[]> => {
+export const userPageApi = (
+  params: UserPageParams,
+): RequestPageDto<UserDto[]> => {
   return request({
     url: '/users/page',
     method: 'get',
@@ -26,7 +33,10 @@ export const userPageApi = (params: UserPageParams): RequestPageDto<UserDto[]> =
 /**
  * 用户名称唯一性校验接口
  */
-export const userNameExistsApi = (name: string, userId?: number): RequestDto<UserNameExistsDto> => {
+export const userNameExistsApi = (
+  name: string,
+  userId?: number,
+): RequestDto<UserNameExistsDto> => {
   return request({
     url: '/users/exists',
     method: 'get',
@@ -37,7 +47,9 @@ export const userNameExistsApi = (name: string, userId?: number): RequestDto<Use
 /**
  * 用户新增接口
  */
-export const userAddApi = (data: UserAddOrUpdateParams): RequestDto<UserDto> => {
+export const userAddApi = (
+  data: UserAddOrUpdateParams,
+): RequestDto<UserDto> => {
   return request({
     url: '/users',
     method: 'post',
@@ -48,7 +60,9 @@ export const userAddApi = (data: UserAddOrUpdateParams): RequestDto<UserDto> => 
 /**
  * 用户编辑接口
  */
-export const userUpdateApi = (data: UserAddOrUpdateParams): RequestDto<UserDto> => {
+export const userUpdateApi = (
+  data: UserAddOrUpdateParams,
+): RequestDto<UserDto> => {
   return request({
     url: `/users/${data.id}`,
     method: 'put',

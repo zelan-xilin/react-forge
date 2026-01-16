@@ -8,7 +8,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import type { ReactNode } from 'react';
+import { cn } from '@/lib/utils';
+import type { Key, ReactNode } from 'react';
 import Pagination from './Pagination';
 
 export interface Column<T> {
@@ -20,6 +21,7 @@ export interface Column<T> {
 interface TableProps<T> {
   columns: Column<T>[];
   data: T[];
+  rowKey: (item: T) => Key;
   footer?: ReactNode;
   caption?: ReactNode;
   extra?: ReactNode;
@@ -43,7 +45,7 @@ const TableExtra = (props: TableExtraProps) => {
         显示&nbsp;{dataLength}&nbsp;条，共&nbsp;{total}&nbsp;条记录
       </div>
 
-      {query && setQuery && (
+      {!!query && !!setQuery && (
         <div className="flex-1">
           <Pagination
             total={total}
@@ -57,18 +59,20 @@ const TableExtra = (props: TableExtraProps) => {
   );
 };
 
-const Table = <T,>(props: TableProps<T>) => {
-  const { columns, data, footer, caption, extra } = props;
+const Table = <T,>(props: TableProps<T> & { className?: string }) => {
+  const { columns, data, footer, caption, extra, rowKey, className } = props;
 
   return (
-    <div className="rounded-2xl border bg-card">
+    <div className={cn('rounded-2xl border bg-card', className)}>
       <ShadcnTable>
         <TableHeader>
           <TableRow>
             {columns.map(column => (
               <TableHead
                 key={column.field}
-                style={{ width: column.width ? `${column.width}px` : 'auto' }}
+                style={{
+                  width: column.width ? `${column.width}px` : undefined,
+                }}
               >
                 {column.title}
               </TableHead>
@@ -78,15 +82,21 @@ const Table = <T,>(props: TableProps<T>) => {
 
         <TableBody>
           {data.map((item, index) => (
-            <TableRow key={index}>
+            <TableRow key={rowKey(item)}>
               {columns.map(column => (
-                <TableCell key={column.field}>{column.render(item, index)}</TableCell>
+                <TableCell key={column.field}>
+                  {column.render(item, index)}
+                </TableCell>
               ))}
             </TableRow>
           ))}
+
           {data.length === 0 && (
             <TableRow className="data-no-hover">
-              <TableCell colSpan={columns.length} className="text-center text-muted-foreground">
+              <TableCell
+                colSpan={columns.length}
+                className="text-center text-muted-foreground"
+              >
                 暂无数据
               </TableCell>
             </TableRow>

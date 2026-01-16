@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useSyncExternalStore } from 'react';
 import { useOutlet } from 'react-router';
-
 import OffscreenFrame from './OffscreenFrame';
 import { useKeepAlive } from './useKeepAlive';
 
@@ -8,11 +7,19 @@ interface KeepAliveOutletProps {
   max?: number;
   activeKey: string;
 }
-const KeepAliveOutlet = ({ max = Infinity, activeKey }: KeepAliveOutletProps) => {
+const KeepAliveOutlet = ({
+  max = Infinity,
+  activeKey,
+}: KeepAliveOutletProps) => {
   const outlet = useOutlet();
-  const { getKeys, getOutlet, addOutlet, subscribeOutlets, getOutletVersion } = useKeepAlive();
+  const { getKeys, getOutlet, addOutlet, subscribeOutlets, getOutletVersion } =
+    useKeepAlive();
 
-  const outletVersion = useSyncExternalStore(subscribeOutlets, getOutletVersion, getOutletVersion);
+  const outletVersion = useSyncExternalStore(
+    subscribeOutlets,
+    getOutletVersion,
+    getOutletVersion,
+  );
 
   useEffect(() => {
     addOutlet(activeKey, outlet, max);
@@ -34,7 +41,10 @@ const KeepAliveOutlet = ({ max = Infinity, activeKey }: KeepAliveOutletProps) =>
         }
 
         return (
-          <OffscreenFrame key={`${k}-${element.instanceId ?? 0}`} active={k === activeKey}>
+          <OffscreenFrame
+            key={`${k}-${element.instanceId ?? 0}`}
+            active={k === activeKey}
+          >
             {element.node}
           </OffscreenFrame>
         );

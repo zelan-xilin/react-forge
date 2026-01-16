@@ -73,7 +73,7 @@ const getFormSchema = (parentId: number | undefined, itemId?: number) =>
           message: '字典子项编码已存在',
         },
       ),
-    sort: z.number().int().optional(),
+    sort: z.number().int().min(-1).optional(),
     status: z.number().int().min(0).max(1).optional(),
     description: z.string().max(200, '描述不能超过200个字符').optional(),
   });
@@ -94,7 +94,7 @@ const DictItemEdit = (props: DictItemEditProps) => {
     defaultValues: {
       label: '',
       value: '',
-      sort: 0,
+      sort: -1,
       status: STATUS.ENABLE,
       description: '',
     },
@@ -107,7 +107,7 @@ const DictItemEdit = (props: DictItemEditProps) => {
     form.reset({
       label: data?.label ?? '',
       value: data?.value ?? '',
-      sort: data?.sort ?? 0,
+      sort: data?.sort ?? -1,
       status: data?.status ?? STATUS.ENABLE,
       description: data?.description ?? '',
     });
@@ -229,9 +229,13 @@ const DictItemEdit = (props: DictItemEditProps) => {
                       id="form-dict-item-sort"
                       aria-invalid={fieldState.invalid}
                       aria-required="true"
-                      placeholder="请输入排序)"
+                      placeholder="请输入排序"
                       autoComplete="off"
+                      min="-1"
                     />
+                    <div className="text-xs text-muted-foreground">
+                      -1 表示该字典子项将排在最后
+                    </div>
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />
                     )}

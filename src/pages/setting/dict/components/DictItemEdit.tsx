@@ -233,7 +233,7 @@ const DictItemEdit = (props: DictItemEditProps) => {
                       autoComplete="off"
                       min="-1"
                     />
-                    <div className="text-xs text-muted-foreground">
+                    <div className="text-xs text-muted-foreground -mt-2">
                       -1 表示该字典子项将排在最后
                     </div>
                     {fieldState.invalid && (

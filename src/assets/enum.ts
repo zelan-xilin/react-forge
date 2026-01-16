@@ -39,10 +39,25 @@ export const chargeTypeOptions = [
   { label: '商品定价', value: CHARGE_TYPE.PRODUCT },
 ];
 
+export const ORDER_STATUS = {
+  OPEN: 'open',
+  PAID: 'paid',
+  CANCELLED: 'cancelled',
+} as const;
+export type ORDER_STATUS = (typeof ORDER_STATUS)[keyof typeof ORDER_STATUS];
+export const orderStatusOptions = [
+  { label: '消费中', value: ORDER_STATUS.OPEN },
+  { label: '已结账', value: ORDER_STATUS.PAID },
+  { label: '已作废', value: ORDER_STATUS.CANCELLED },
+];
+
 export const MUST_HAVE_DICT = {
   AREA_TYPE: 'area_type',
   ROOM_SIZE: 'room_size',
   RULE_APPLICATION_TYPE: 'rule_application_type',
+  RECIPE_UNIT: 'recipe_unit',
+  PAYMENT_METHOD: 'payment_method',
+  PAYMENT_PRICE_MODIFY_REASON: 'payment_price_modify_reason',
 } as const;
 export type MUST_HAVE_DICT =
   (typeof MUST_HAVE_DICT)[keyof typeof MUST_HAVE_DICT];
@@ -64,7 +79,17 @@ export const mustHaveDictOptions = [
   },
   {
     label: '配方单位',
-    value: 'recipe_unit',
+    value: MUST_HAVE_DICT.RECIPE_UNIT,
     description: '子项如：包、克、一勺',
+  },
+  {
+    label: '支付方式',
+    value: MUST_HAVE_DICT.PAYMENT_METHOD,
+    description: '子项如：现金、微信、支付宝、会员卡',
+  },
+  {
+    label: '支付价格修改原因',
+    value: MUST_HAVE_DICT.PAYMENT_PRICE_MODIFY_REASON,
+    description: '子项如：优惠、加价、其他',
   },
 ];

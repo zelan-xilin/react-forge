@@ -14,7 +14,7 @@ import Status from '@/components/Status';
 import type { Column } from '@/components/Table';
 import Table, { TableExtra } from '@/components/Table';
 import { Button } from '@/components/ui/button';
-import type { RootState } from '@/store';
+import { useDict } from '@/hooks/useDict';
 import {
   useEffect,
   useImperativeHandle,
@@ -23,7 +23,6 @@ import {
   type Ref,
   type SetStateAction,
 } from 'react';
-import { useSelector } from 'react-redux';
 import { toast } from 'sonner';
 import ProductPricingEdit from './ProductPricingEdit';
 
@@ -42,7 +41,7 @@ interface ProductTableProps {
 }
 const ProductTable = (props: ProductTableProps) => {
   const { refreshId, onRefresh, ref } = props;
-  const dict = useSelector((state: RootState) => state.dict);
+  const { dict } = useDict();
 
   const [productList, setProductList] = useState<RecipeDto[]>([]);
   useEffect(() => {
@@ -103,7 +102,7 @@ const ProductTable = (props: ProductTableProps) => {
       title: '收费规则应用类型',
       field: 'ruleApplicationType',
       render: item =>
-        dict.data['rule_application_type']?.find(
+        dict.rule_application_type?.find(
           it => it.value === item.ruleApplicationType,
         )?.label || item.ruleApplicationType,
     },

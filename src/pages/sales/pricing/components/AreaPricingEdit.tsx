@@ -27,11 +27,10 @@ import {
   SheetTitle,
 } from '@/components/ui/sheet';
 import { Textarea } from '@/components/ui/textarea';
-import type { RootState } from '@/store';
+import { useDict } from '@/hooks/useDict';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { useSelector } from 'react-redux';
 import { toast } from 'sonner';
 import * as z from 'zod';
 
@@ -59,15 +58,15 @@ interface AreaPricingEditProps {
 }
 const AreaPricingEdit = (props: AreaPricingEditProps) => {
   const { data, open, onClose } = props;
-  const dict = useSelector((state: RootState) => state.dict);
+  const { dict } = useDict();
 
   const [isPending, setIsPending] = useState(false);
   const form = useForm<FormSchema>({
     resolver: zodResolver(getFormSchema()),
     defaultValues: {
-      areaType: dict.data['area_type']?.[0]?.value ?? '',
-      roomSize: dict.data['room_size']?.[0]?.value ?? '',
-      ruleApplicationType: dict.data['rule_application_type']?.[0]?.value ?? '',
+      areaType: dict.area_type?.[0]?.value ?? '',
+      roomSize: dict.room_size?.[0]?.value ?? '',
+      ruleApplicationType: dict.rule_application_type?.[0]?.value ?? '',
       applyTimeStart: '09:00:00',
       usageDurationHours: 5,
       basePrice: 0,
@@ -85,12 +84,11 @@ const AreaPricingEdit = (props: AreaPricingEditProps) => {
     }
 
     form.reset({
-      areaType: data?.areaType ?? dict.data['area_type']?.[0]?.value ?? '',
-      roomSize:
-        (data?.id ? data.roomSize : dict.data['room_size']?.[0]?.value) ?? '0',
+      areaType: data?.areaType ?? dict.area_type?.[0]?.value ?? '',
+      roomSize: (data?.id ? data.roomSize : dict.room_size?.[0]?.value) ?? '0',
       ruleApplicationType:
         data?.ruleApplicationType ??
-        dict.data['rule_application_type']?.[0]?.value ??
+        dict.rule_application_type?.[0]?.value ??
         '',
       applyTimeStart: data?.applyTimeStart ?? '09:00:00',
       usageDurationHours: data?.usageDurationHours ?? 5,
@@ -103,7 +101,7 @@ const AreaPricingEdit = (props: AreaPricingEditProps) => {
       status: data?.status ?? STATUS.ENABLE,
       description: data?.description ?? '',
     });
-  }, [open, data, form, dict.data]);
+  }, [open, data, form, dict]);
   const onSubmit = async (formData: FormSchema) => {
     try {
       setIsPending(true);
@@ -165,7 +163,7 @@ const AreaPricingEdit = (props: AreaPricingEditProps) => {
                         <SelectValue placeholder="请选择区域类型" />
                       </SelectTrigger>
                       <SelectContent>
-                        {dict.data['area_type']?.map(it => (
+                        {dict.area_type?.map(it => (
                           <SelectItem
                             key={it.value}
                             value={String(it.value)}
@@ -174,7 +172,7 @@ const AreaPricingEdit = (props: AreaPricingEditProps) => {
                             {it.label}
                           </SelectItem>
                         ))}
-                        {!dict.data['area_type']?.length && (
+                        {!dict.area_type?.length && (
                           <SelectItem value="empty">
                             暂无可用选项，请前往字典管理添加
                           </SelectItem>
@@ -208,7 +206,7 @@ const AreaPricingEdit = (props: AreaPricingEditProps) => {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="0">暂无包间大小</SelectItem>
-                        {dict.data['room_size']?.map(it => (
+                        {dict.room_size?.map(it => (
                           <SelectItem
                             key={it.value}
                             value={String(it.value)}
@@ -246,7 +244,7 @@ const AreaPricingEdit = (props: AreaPricingEditProps) => {
                         <SelectValue placeholder="请选择收费规则应用类型" />
                       </SelectTrigger>
                       <SelectContent>
-                        {dict.data['rule_application_type']?.map(it => (
+                        {dict.rule_application_type?.map(it => (
                           <SelectItem
                             key={it.value}
                             value={String(it.value)}
@@ -255,7 +253,7 @@ const AreaPricingEdit = (props: AreaPricingEditProps) => {
                             {it.label}
                           </SelectItem>
                         ))}
-                        {!dict.data['rule_application_type']?.length && (
+                        {!dict.rule_application_type?.length && (
                           <SelectItem value="empty">
                             暂无可用选项，请前往字典管理添加
                           </SelectItem>

@@ -6,18 +6,17 @@ import PageWrapper from '@/components/PageWrapper';
 import Status from '@/components/Status';
 import Table, { TableExtra, type Column } from '@/components/Table';
 import { Button } from '@/components/ui/button';
+import { useDict } from '@/hooks/useDict';
 import { useKeepAliveRefresh } from '@/layouts';
-import type { RootState } from '@/store';
 import { Plus, RotateCw } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { toast } from 'sonner';
 import AreaEdit from './components/AreaEdit';
 
 const Areas = () => {
   const { refreshId, refreshLoading, onRefresh } =
     useKeepAliveRefresh('/sales/areas');
-  const dict = useSelector((state: RootState) => state.dict);
+  const { dict } = useDict();
 
   const [query, setQuery] = useState<AreaPageParams>({ page: 1, pageSize: 10 });
   const [data, setData] = useState<AreaDto[]>([]);
@@ -60,14 +59,14 @@ const Areas = () => {
       title: '区域类型',
       field: 'areaType',
       render: item =>
-        dict.data['area_type']?.find(it => it.value === item.areaType)?.label ||
+        dict.area_type?.find(it => it.value === item.areaType)?.label ||
         item.areaType,
     },
     {
       title: '包间大小',
       field: 'roomSize',
       render: item =>
-        dict.data['room_size']?.find(it => it.value === item.roomSize)?.label ||
+        dict.room_size?.find(it => it.value === item.roomSize)?.label ||
         item.roomSize,
     },
     {

@@ -33,11 +33,10 @@ import {
   SheetTitle,
 } from '@/components/ui/sheet';
 import { Textarea } from '@/components/ui/textarea';
-import type { RootState } from '@/store';
+import { useDict } from '@/hooks/useDict';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useState } from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
-import { useSelector } from 'react-redux';
 import { toast } from 'sonner';
 import * as z from 'zod';
 
@@ -99,7 +98,7 @@ interface RecipeEditProps {
 }
 const RecipeEdit = (props: RecipeEditProps) => {
   const { data, open, onClose } = props;
-  const dict = useSelector((state: RootState) => state.dict);
+  const { dict } = useDict();
 
   const [materialList, setMaterialList] = useState<MaterialDto[]>([]);
   useEffect(() => {
@@ -300,7 +299,7 @@ const RecipeEdit = (props: RecipeEditProps) => {
                       m => String(m.id) === String(selectedMaterialId),
                     );
                     const unitLabel =
-                      dict.data?.['recipe_unit']?.find(
+                      dict.recipe_unit?.find(
                         u => u.value === selectedMaterial?.recipeUnit,
                       )?.label ??
                       selectedMaterial?.recipeUnit ??

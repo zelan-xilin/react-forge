@@ -31,11 +31,10 @@ import {
   SheetTitle,
 } from '@/components/ui/sheet';
 import { Textarea } from '@/components/ui/textarea';
-import type { RootState } from '@/store';
+import { useDict } from '@/hooks/useDict';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { useSelector } from 'react-redux';
 import { toast } from 'sonner';
 import * as z from 'zod';
 
@@ -68,7 +67,7 @@ interface MaterialEditProps {
 }
 const MaterialEdit = (props: MaterialEditProps) => {
   const { data, open, onClose } = props;
-  const dict = useSelector((state: RootState) => state.dict);
+  const { dict } = useDict();
 
   const [isPending, setIsPending] = useState(false);
   const form = useForm<FormSchema>({
@@ -176,7 +175,7 @@ const MaterialEdit = (props: MaterialEditProps) => {
                         <SelectValue placeholder="请选择配方单位" />
                       </SelectTrigger>
                       <SelectContent>
-                        {dict.data['recipe_unit']?.map(it => (
+                        {dict.recipe_unit?.map(it => (
                           <SelectItem
                             key={it.value}
                             value={String(it.value)}
@@ -185,7 +184,7 @@ const MaterialEdit = (props: MaterialEditProps) => {
                             {it.label}
                           </SelectItem>
                         ))}
-                        {!dict.data['recipe_unit']?.length && (
+                        {!dict.recipe_unit?.length && (
                           <SelectItem value="empty">
                             暂无可用选项，请前往字典管理添加
                           </SelectItem>

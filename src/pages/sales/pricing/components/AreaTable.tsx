@@ -9,7 +9,7 @@ import Status from '@/components/Status';
 import type { Column } from '@/components/Table';
 import Table, { TableExtra } from '@/components/Table';
 import { Button } from '@/components/ui/button';
-import type { RootState } from '@/store';
+import { useDict } from '@/hooks/useDict';
 import {
   useEffect,
   useImperativeHandle,
@@ -18,7 +18,6 @@ import {
   type Ref,
   type SetStateAction,
 } from 'react';
-import { useSelector } from 'react-redux';
 import { toast } from 'sonner';
 import AreaPricingEdit from './AreaPricingEdit';
 
@@ -37,7 +36,7 @@ interface AreaTableProps {
 }
 const AreaTable = (props: AreaTableProps) => {
   const { refreshId, onRefresh, ref } = props;
-  const dict = useSelector((state: RootState) => state.dict);
+  const { dict } = useDict();
 
   const [query, setQuery] = useState<AreaPricingPageParams>({
     page: 1,
@@ -79,21 +78,21 @@ const AreaTable = (props: AreaTableProps) => {
       title: '区域类型',
       field: 'areaType',
       render: item =>
-        dict.data['area_type']?.find(it => it.value === item.areaType)?.label ||
+        dict.area_type?.find(it => it.value === item.areaType)?.label ||
         item.areaType,
     },
     {
       title: '包间大小',
       field: 'roomSize',
       render: item =>
-        dict.data['room_size']?.find(it => it.value === item.roomSize)?.label ||
+        dict.room_size?.find(it => it.value === item.roomSize)?.label ||
         item.roomSize,
     },
     {
       title: '收费规则应用类型',
       field: 'ruleApplicationType',
       render: item =>
-        dict.data['rule_application_type']?.find(
+        dict.rule_application_type?.find(
           it => it.value === item.ruleApplicationType,
         )?.label || item.ruleApplicationType,
     },

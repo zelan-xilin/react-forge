@@ -32,11 +32,10 @@ import {
   SheetTitle,
 } from '@/components/ui/sheet';
 import { Textarea } from '@/components/ui/textarea';
-import type { RootState } from '@/store';
+import { useDict } from '@/hooks/useDict';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { useSelector } from 'react-redux';
 import { toast } from 'sonner';
 import * as z from 'zod';
 
@@ -58,7 +57,7 @@ interface ProductPricingEditProps {
 }
 const ProductPricingEdit = (props: ProductPricingEditProps) => {
   const { data, open, onClose } = props;
-  const dict = useSelector((state: RootState) => state.dict);
+  const { dict } = useDict();
 
   const [productList, setProductList] = useState<RecipeDto[]>([]);
   useEffect(() => {
@@ -246,7 +245,7 @@ const ProductPricingEdit = (props: ProductPricingEditProps) => {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="0">暂无收费规则应用类型</SelectItem>
-                        {dict.data['rule_application_type']?.map(it => (
+                        {dict.rule_application_type?.map(it => (
                           <SelectItem
                             key={it.value}
                             value={String(it.value)}

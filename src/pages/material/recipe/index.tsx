@@ -11,18 +11,17 @@ import Status from '@/components/Status';
 import Table, { TableExtra, type Column } from '@/components/Table';
 import TableExpandable from '@/components/TableExpandable';
 import { Button } from '@/components/ui/button';
+import { useDict } from '@/hooks/useDict';
 import { useKeepAliveRefresh } from '@/layouts';
-import type { RootState } from '@/store';
 import { Plus, RotateCw } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { toast } from 'sonner';
 import RecipeEdit from './components/RecipeEdit';
 
 const Recipe = () => {
   const { refreshId, refreshLoading, onRefresh } =
     useKeepAliveRefresh('/material/recipe');
-  const dict = useSelector((state: RootState) => state.dict);
+  const { dict } = useDict();
 
   const [query, setQuery] = useState<RecipePageParams>({
     page: 1,
@@ -118,8 +117,8 @@ const Recipe = () => {
       field: 'recipeUnit',
       width: 250,
       render: item =>
-        dict.data['recipe_unit']?.find(it => it.value === item.recipeUnit)
-          ?.label || item.recipeUnit,
+        dict.recipe_unit?.find(it => it.value === item.recipeUnit)?.label ||
+        item.recipeUnit,
     },
     {
       title: '配方用量',

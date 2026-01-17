@@ -1,4 +1,4 @@
-import type { STATUS } from '@/assets/enum';
+import type { MUST_HAVE_DICT, STATUS } from '@/assets/enum';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 type Dict = {
@@ -7,23 +7,26 @@ type Dict = {
   status: STATUS;
 }[];
 interface DictState {
-  data: Record<string, Dict>;
+  data: Record<MUST_HAVE_DICT, Dict | undefined>;
 }
 
 const DICT_KEY = `${import.meta.env.VITE_STORE_PREFIX}_dict`;
 const initialState: DictState = {
-  data: {},
+  data: {} as DictState['data'],
 };
 
 const dictSlice = createSlice({
   name: DICT_KEY,
   initialState,
   reducers: {
-    setDict: (state, action: PayloadAction<Record<string, Dict>>) => {
+    setDict: (
+      state,
+      action: PayloadAction<Record<MUST_HAVE_DICT, Dict | undefined>>,
+    ) => {
       Object.assign(state.data, action.payload);
     },
     clearDict: state => {
-      state.data = {};
+      state.data = {} as DictState['data'];
     },
   },
 });

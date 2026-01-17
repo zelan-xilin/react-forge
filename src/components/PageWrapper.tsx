@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 
 interface PageWrapperProps {
   title: ReactNode;
-  description?: string;
+  description?: ReactNode;
   extra?: ReactNode;
   actions?: ReactNode;
   children?: ReactNode;

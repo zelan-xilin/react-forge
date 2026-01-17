@@ -40,12 +40,14 @@ export const chargeTypeOptions = [
 ];
 
 export const ORDER_STATUS = {
+  RESERVED: 'reserved',
   OPEN: 'open',
   PAID: 'paid',
   CANCELLED: 'cancelled',
 } as const;
 export type ORDER_STATUS = (typeof ORDER_STATUS)[keyof typeof ORDER_STATUS];
 export const orderStatusOptions = [
+  { label: '预定', value: ORDER_STATUS.RESERVED },
   { label: '消费中', value: ORDER_STATUS.OPEN },
   { label: '已结账', value: ORDER_STATUS.PAID },
   { label: '已作废', value: ORDER_STATUS.CANCELLED },

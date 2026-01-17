@@ -27,7 +27,7 @@ export const baseRoutes: BaseRoute[] = [
     path: 'cashier',
     title: '收银台',
     icon: CircleStar,
-    lazy: () => import('../pages/sales/cashier'),
+    lazy: () => import('../pages/cashier'),
   },
   {
     path: '/sales',

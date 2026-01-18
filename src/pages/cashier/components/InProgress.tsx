@@ -17,7 +17,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { useDict } from '@/hooks/useDict';
 import { ArrowRight, BadgeQuestionMark, CirclePlus } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import OrderEdit from './OrderEdit';
 
 /**
@@ -149,6 +149,7 @@ const InProgress = ({
     const now = new Date();
     return now.getTime() - openedAt.getTime();
   });
+  const timer = useRef<ReturnType<typeof setInterval>>(null);
   useEffect(() => {
     if (!order?.openedAt) {
       Promise.resolve().then(() => setElapsedMilliseconds(0));
@@ -162,9 +163,16 @@ const InProgress = ({
       setElapsedMilliseconds(now.getTime() - openedAt.getTime());
     };
 
-    const timer = setInterval(updateElapsed, 1000);
+    if (timer.current) {
+      clearInterval(timer.current);
+    }
+    timer.current = setInterval(updateElapsed, 1000);
 
-    return () => clearInterval(timer);
+    return () => {
+      if (timer.current) {
+        clearInterval(timer.current);
+      }
+    };
   }, [order?.openedAt]);
 
   /**

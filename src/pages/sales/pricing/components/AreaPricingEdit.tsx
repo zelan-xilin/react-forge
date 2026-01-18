@@ -1,6 +1,11 @@
 import { areaPricingAddApi, areaPricingUpdateApi } from '@/api/pricing/area';
 import type { AreaPricingDto } from '@/api/pricing/area-types';
-import { overtimeRoundingOptions, STATUS, statusOptions } from '@/assets/enum';
+import {
+  OVERTIME_ROUNDING,
+  overtimeRoundingOptions,
+  STATUS,
+  statusOptions,
+} from '@/assets/enum';
 import { Button } from '@/components/ui/button';
 import {
   Field,
@@ -38,8 +43,8 @@ const getFormSchema = () =>
   z.object({
     areaType: z.string('区域类型不能为空'),
     roomSize: z.string().optional(),
-    ruleApplicationType: z.string('收费规则应用类型不能为空'),
     applyTimeStart: z.string('收费规则应用起始时间不能为空'),
+    applyTimeEnd: z.string('收费规则应用结束时间不能为空'),
     usageDurationHours: z.number().min(0, '使用时长不能为空'),
     basePrice: z.number().min(0, '基础收费不能为空'),
     overtimeHourPrice: z.number().min(0, '超时每小时收费不能为空'),
@@ -66,8 +71,8 @@ const AreaPricingEdit = (props: AreaPricingEditProps) => {
     defaultValues: {
       areaType: dict.area_type?.[0]?.value ?? '',
       roomSize: dict.room_size?.[0]?.value ?? '',
-      ruleApplicationType: dict.rule_application_type?.[0]?.value ?? '',
       applyTimeStart: '09:00:00',
+      applyTimeEnd: '18:00:00',
       usageDurationHours: 5,
       basePrice: 0,
       overtimeHourPrice: 0,
@@ -86,11 +91,8 @@ const AreaPricingEdit = (props: AreaPricingEditProps) => {
     form.reset({
       areaType: data?.areaType ?? dict.area_type?.[0]?.value ?? '',
       roomSize: (data?.id ? data.roomSize : dict.room_size?.[0]?.value) ?? '0',
-      ruleApplicationType:
-        data?.ruleApplicationType ??
-        dict.rule_application_type?.[0]?.value ??
-        '',
       applyTimeStart: data?.applyTimeStart ?? '09:00:00',
+      applyTimeEnd: data?.applyTimeEnd ?? '18:00:00',
       usageDurationHours: data?.usageDurationHours ?? 5,
       basePrice: data?.basePrice ?? 0,
       overtimeHourPrice: data?.overtimeHourPrice ?? 0,
@@ -113,6 +115,7 @@ const AreaPricingEdit = (props: AreaPricingEditProps) => {
           roomSize: formData.roomSize === '0' ? null : formData.roomSize,
           status: formData.status as STATUS,
           description: formData.description || null,
+          overtimeRoundType: formData.overtimeRoundType as OVERTIME_ROUNDING,
         });
       } else {
         await areaPricingAddApi({
@@ -120,6 +123,7 @@ const AreaPricingEdit = (props: AreaPricingEditProps) => {
           roomSize: formData.roomSize === '0' ? null : formData.roomSize,
           status: formData.status as STATUS,
           description: formData.description,
+          overtimeRoundType: formData.overtimeRoundType as OVERTIME_ROUNDING,
         });
       }
 
@@ -225,49 +229,6 @@ const AreaPricingEdit = (props: AreaPricingEditProps) => {
               />
 
               <Controller
-                name="ruleApplicationType"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel
-                      htmlFor="form-area-pricing-ruleApplicationType"
-                      className="tracking-widest"
-                    >
-                      <span className="text-destructive">*</span>
-                      收费规则应用类型
-                    </FieldLabel>
-                    <Select
-                      value={field.value}
-                      onValueChange={val => field.onChange(val)}
-                    >
-                      <SelectTrigger id="form-area-pricing-ruleApplicationType">
-                        <SelectValue placeholder="请选择收费规则应用类型" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {dict.rule_application_type?.map(it => (
-                          <SelectItem
-                            key={it.value}
-                            value={String(it.value)}
-                            disabled={it.status !== STATUS.ENABLE}
-                          >
-                            {it.label}
-                          </SelectItem>
-                        ))}
-                        {!dict.rule_application_type?.length && (
-                          <SelectItem value="empty">
-                            暂无可用选项，请前往字典管理添加
-                          </SelectItem>
-                        )}
-                      </SelectContent>
-                    </Select>
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
-
-              <Controller
                 name="applyTimeStart"
                 control={form.control}
                 render={({ field, fieldState }) => (
@@ -286,6 +247,35 @@ const AreaPricingEdit = (props: AreaPricingEditProps) => {
                       aria-invalid={fieldState.invalid}
                       aria-required="true"
                       placeholder="请输入收费规则应用起始时间"
+                      autoComplete="off"
+                      step="1"
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+
+              <Controller
+                name="applyTimeEnd"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel
+                      htmlFor="form-area-pricing-applyTimeEnd"
+                      className="tracking-widest"
+                    >
+                      <span className="text-destructive">*</span>
+                      收费规则应用结束时间
+                    </FieldLabel>
+                    <Input
+                      {...field}
+                      type="time"
+                      id="form-area-pricing-applyTimeEnd"
+                      aria-invalid={fieldState.invalid}
+                      aria-required="true"
+                      placeholder="请输入收费规则应用结束时间"
                       autoComplete="off"
                       step="1"
                     />

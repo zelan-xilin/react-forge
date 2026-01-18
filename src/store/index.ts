@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 
 import authReducer from './modules/authSlice';
 import dictReducer from './modules/dictSlice';
+import systemReducer from './modules/system';
 import userReducer from './modules/userSlice';
 
 export const store = configureStore({
@@ -9,6 +10,7 @@ export const store = configureStore({
     user: userReducer,
     auth: authReducer,
     dict: dictReducer,
+    system: systemReducer,
   },
 });
 

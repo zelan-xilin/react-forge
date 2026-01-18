@@ -14,7 +14,7 @@ function Checkbox({
         'group peer border-input dark:bg-input/30 \
          data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[state=checked]:border-primary \
          data-[state=indeterminate]:bg-primary/40 data-[state=indeterminate]:border-primary \
-         size-4 shrink-0 rounded-[4px] border shadow-xs transition-shadow outline-none focus-visible:ring-[3px] \
+         size-4 shrink-0 rounded border shadow-xs transition-shadow outline-none focus-visible:ring-[3px] \
          disabled:cursor-not-allowed disabled:opacity-50',
         className,
       )}

@@ -8,7 +8,9 @@ import type {
 /**
  * 商品价格新增接口
  */
-export const productPricingAddApi = (data: Omit<ProductPricingDto, 'id'>) => {
+export const productPricingAddApi = (
+  data: Omit<ProductPricingDto, 'id' | 'productName'>,
+) => {
   return request({
     url: '/product-pricing',
     method: 'post',

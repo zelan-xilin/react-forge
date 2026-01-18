@@ -89,17 +89,14 @@ const AreaTable = (props: AreaTableProps) => {
         item.roomSize,
     },
     {
-      title: '收费规则应用类型',
-      field: 'ruleApplicationType',
-      render: item =>
-        dict.rule_application_type?.find(
-          it => it.value === item.ruleApplicationType,
-        )?.label || item.ruleApplicationType,
-    },
-    {
       title: '收费规则应用起始时间',
       field: 'applyTimeStart',
       render: item => item.applyTimeStart,
+    },
+    {
+      title: '收费规则应用结束时间',
+      field: 'applyTimeEnd',
+      render: item => item.applyTimeEnd,
     },
     {
       title: '使用时长(小时)',

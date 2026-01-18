@@ -1,5 +1,5 @@
 import type { MUST_HAVE_DICT, STATUS } from '@/assets/enum';
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 type Dict = {
   label: string;
@@ -19,10 +19,7 @@ const dictSlice = createSlice({
   name: DICT_KEY,
   initialState,
   reducers: {
-    setDict: (
-      state,
-      action: PayloadAction<Record<MUST_HAVE_DICT, Dict | undefined>>,
-    ) => {
+    setDict: (state, action) => {
       Object.assign(state.data, action.payload);
     },
     clearDict: state => {

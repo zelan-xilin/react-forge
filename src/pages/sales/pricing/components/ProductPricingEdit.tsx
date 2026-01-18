@@ -32,7 +32,6 @@ import {
   SheetTitle,
 } from '@/components/ui/sheet';
 import { Textarea } from '@/components/ui/textarea';
-import { useDict } from '@/hooks/useDict';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -43,8 +42,6 @@ const getFormSchema = () =>
   z.object({
     productId: z.number('商品不能为空'),
     price: z.number().min(0, '售价不能为空'),
-    ruleApplicationType: z.string('收费规则应用类型不能为空').optional(),
-    applyTimeStart: z.string('收费规则应用起始时间不能为空').optional(),
     status: z.number().min(0).max(1).optional(),
     description: z.string().max(200, '描述不能超过200个字符').optional(),
   });
@@ -57,7 +54,6 @@ interface ProductPricingEditProps {
 }
 const ProductPricingEdit = (props: ProductPricingEditProps) => {
   const { data, open, onClose } = props;
-  const { dict } = useDict();
 
   const [productList, setProductList] = useState<RecipeDto[]>([]);
   useEffect(() => {
@@ -76,8 +72,6 @@ const ProductPricingEdit = (props: ProductPricingEditProps) => {
     defaultValues: {
       productId: 0,
       price: 0,
-      ruleApplicationType: '',
-      applyTimeStart: '09:00:00',
       status: STATUS.ENABLE,
       description: '',
     },
@@ -90,8 +84,6 @@ const ProductPricingEdit = (props: ProductPricingEditProps) => {
     form.reset({
       productId: data?.productId ?? 0,
       price: data?.price ?? 0,
-      ruleApplicationType: data?.ruleApplicationType ?? '0',
-      applyTimeStart: data?.applyTimeStart ?? '09:00:00',
       status: data?.status ?? STATUS.ENABLE,
       description: data?.description ?? '',
     });
@@ -104,22 +96,12 @@ const ProductPricingEdit = (props: ProductPricingEditProps) => {
         await productPricingUpdateApi({
           id: data.id,
           ...formData,
-          ruleApplicationType:
-            formData.ruleApplicationType === '0'
-              ? null
-              : formData.ruleApplicationType || null,
-          applyTimeStart: formData.applyTimeStart || null,
           status: formData.status as STATUS,
           description: formData.description || null,
         });
       } else {
         await productPricingAddApi({
           ...formData,
-          ruleApplicationType:
-            formData.ruleApplicationType === '0'
-              ? null
-              : formData.ruleApplicationType || null,
-          applyTimeStart: formData.applyTimeStart || null,
           status: formData.status as STATUS,
           description: formData.description,
         });
@@ -217,72 +199,6 @@ const ProductPricingEdit = (props: ProductPricingEditProps) => {
                       aria-required="true"
                       placeholder="请输入售价(元)"
                       autoComplete="off"
-                    />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
-
-              <Controller
-                name="ruleApplicationType"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel
-                      htmlFor="form-product-pricing-ruleApplicationType"
-                      className="tracking-widest"
-                    >
-                      收费规则应用类型
-                    </FieldLabel>
-                    <Select
-                      value={field.value}
-                      onValueChange={val => field.onChange(val)}
-                    >
-                      <SelectTrigger id="form-product-pricing-ruleApplicationType">
-                        <SelectValue placeholder="请选择收费规则应用类型" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="0">暂无收费规则应用类型</SelectItem>
-                        {dict.rule_application_type?.map(it => (
-                          <SelectItem
-                            key={it.value}
-                            value={String(it.value)}
-                            disabled={it.status !== STATUS.ENABLE}
-                          >
-                            {it.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
-
-              <Controller
-                name="applyTimeStart"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel
-                      htmlFor="form-product-pricing-applyTimeStart"
-                      className="tracking-widest"
-                    >
-                      收费规则应用起始时间
-                    </FieldLabel>
-                    <Input
-                      {...field}
-                      type="time"
-                      id="form-product-pricing-applyTimeStart"
-                      aria-invalid={fieldState.invalid}
-                      aria-required="true"
-                      placeholder="请输入收费规则应用起始时间"
-                      autoComplete="off"
-                      step="1"
                     />
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />

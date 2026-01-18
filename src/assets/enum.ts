@@ -1,3 +1,5 @@
+export const MAX_PAGE_SIZE = 10000;
+
 export const STATUS = {
   DISABLE: 0,
   ENABLE: 1,
@@ -6,6 +8,16 @@ export type STATUS = (typeof STATUS)[keyof typeof STATUS];
 export const statusOptions = [
   { label: '启用', value: STATUS.ENABLE },
   { label: '禁用', value: STATUS.DISABLE },
+];
+
+export const IS_DELETE = {
+  NO: 0,
+  YES: 1,
+} as const;
+export type IS_DELETE = (typeof IS_DELETE)[keyof typeof IS_DELETE];
+export const isDeleteOptions = [
+  { label: '否', value: IS_DELETE.NO },
+  { label: '是', value: IS_DELETE.YES },
 ];
 
 export const IS_ADMIN = {
@@ -41,14 +53,16 @@ export const chargeTypeOptions = [
 
 export const ORDER_STATUS = {
   RESERVED: 'reserved',
-  OPEN: 'open',
+  IN_PROGRESS: 'in_progress',
+  PENDING_PAY: 'pending_pay',
   PAID: 'paid',
   CANCELLED: 'cancelled',
 } as const;
 export type ORDER_STATUS = (typeof ORDER_STATUS)[keyof typeof ORDER_STATUS];
 export const orderStatusOptions = [
   { label: '预定', value: ORDER_STATUS.RESERVED },
-  { label: '消费中', value: ORDER_STATUS.OPEN },
+  { label: '消费中', value: ORDER_STATUS.IN_PROGRESS },
+  { label: '待结账', value: ORDER_STATUS.PENDING_PAY },
   { label: '已结账', value: ORDER_STATUS.PAID },
   { label: '已作废', value: ORDER_STATUS.CANCELLED },
 ];
@@ -56,7 +70,6 @@ export const orderStatusOptions = [
 export const MUST_HAVE_DICT = {
   AREA_TYPE: 'area_type',
   ROOM_SIZE: 'room_size',
-  RULE_APPLICATION_TYPE: 'rule_application_type',
   RECIPE_UNIT: 'recipe_unit',
   PAYMENT_METHOD: 'payment_method',
   PAYMENT_PRICE_MODIFY_REASON: 'payment_price_modify_reason',
@@ -73,11 +86,6 @@ export const mustHaveDictOptions = [
     label: '房间大小',
     value: MUST_HAVE_DICT.ROOM_SIZE,
     description: '子项如：小型、中型、大型',
-  },
-  {
-    label: '收费规则应用类型',
-    value: MUST_HAVE_DICT.RULE_APPLICATION_TYPE,
-    description: '子项如：白天、夜晚、九折优惠',
   },
   {
     label: '配方单位',

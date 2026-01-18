@@ -1,15 +1,15 @@
-import type { STATUS } from '@/assets/enum';
+import type { OVERTIME_ROUNDING, STATUS } from '@/assets/enum';
 
 export interface AreaPricingDto {
   id: number;
   areaType: string;
   roomSize?: string | null;
-  ruleApplicationType: string;
   applyTimeStart: string;
+  applyTimeEnd: string;
   usageDurationHours: number;
   basePrice: number;
   overtimeHourPrice: number;
-  overtimeRoundType: string;
+  overtimeRoundType: OVERTIME_ROUNDING;
   overtimeGraceMinutes: number;
   giftTeaAmount: number;
   status: STATUS;

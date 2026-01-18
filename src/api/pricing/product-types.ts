@@ -3,9 +3,8 @@ import type { STATUS } from '@/assets/enum';
 export interface ProductPricingDto {
   id: number;
   productId: number;
+  productName: string;
   price: number;
-  ruleApplicationType?: string | null;
-  applyTimeStart?: string | null;
   status: STATUS;
   description?: string | null;
 }

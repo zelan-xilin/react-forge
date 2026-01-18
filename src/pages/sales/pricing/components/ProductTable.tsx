@@ -6,15 +6,12 @@ import type {
   ProductPricingDto,
   ProductPricingPageParams,
 } from '@/api/pricing/product-types';
-import { recipeListApi } from '@/api/recipe';
-import type { RecipeDto } from '@/api/recipe/types';
 import { STATUS } from '@/assets/enum';
 import Delete from '@/components/Delete';
 import Status from '@/components/Status';
 import type { Column } from '@/components/Table';
 import Table, { TableExtra } from '@/components/Table';
 import { Button } from '@/components/ui/button';
-import { useDict } from '@/hooks/useDict';
 import {
   useEffect,
   useImperativeHandle,
@@ -41,14 +38,6 @@ interface ProductTableProps {
 }
 const ProductTable = (props: ProductTableProps) => {
   const { refreshId, onRefresh, ref } = props;
-  const { dict } = useDict();
-
-  const [productList, setProductList] = useState<RecipeDto[]>([]);
-  useEffect(() => {
-    recipeListApi().then(res => {
-      setProductList(res.data);
-    });
-  }, [refreshId]);
 
   const [query, setQuery] = useState<ProductPricingPageParams>({
     page: 1,
@@ -88,28 +77,13 @@ const ProductTable = (props: ProductTableProps) => {
     },
     {
       title: '商品名称',
-      field: 'productId',
-      render: item =>
-        productList.find(it => it.id === item.productId)?.name ||
-        item.productId,
+      field: 'productName',
+      render: item => item.productName,
     },
     {
       title: '售价(元)',
       field: 'price',
       render: item => item.price,
-    },
-    {
-      title: '收费规则应用类型',
-      field: 'ruleApplicationType',
-      render: item =>
-        dict.rule_application_type?.find(
-          it => it.value === item.ruleApplicationType,
-        )?.label || item.ruleApplicationType,
-    },
-    {
-      title: '收费规则应用起始时间',
-      field: 'applyTimeStart',
-      render: item => item.applyTimeStart,
     },
     {
       title: '状态',

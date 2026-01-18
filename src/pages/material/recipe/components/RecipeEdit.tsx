@@ -35,8 +35,8 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { useDict } from '@/hooks/useDict';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect, useState } from 'react';
-import { Controller, useFieldArray, useForm } from 'react-hook-form';
+import { useEffect, useMemo, useState } from 'react';
+import { Controller, useFieldArray, useForm, useWatch } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as z from 'zod';
 
@@ -91,6 +91,95 @@ const getFormSchema = (recipeId?: number) =>
   });
 type FormSchema = z.infer<ReturnType<typeof getFormSchema>>;
 
+interface RecipeMaterialItemProps {
+  materialList: MaterialDto[];
+  materialMap: Map<number, MaterialDto>;
+  index: number;
+  remove: (index: number) => void;
+  form: ReturnType<typeof useForm<FormSchema>>;
+}
+const RecipeMaterialItem = (props: RecipeMaterialItemProps) => {
+  const { materialList, materialMap, index, remove, form } = props;
+  const { dict } = useDict();
+
+  const materialId = useWatch({
+    control: form.control,
+    name: `children.${index}.materialId`,
+  });
+
+  const material = materialMap.get(Number(materialId));
+  const unitLabel =
+    dict.recipe_unit?.find(u => u.value === material?.recipeUnit)?.label ??
+    material?.recipeUnit ??
+    '-';
+
+  return (
+    <div className="grid grid-cols-[120px_1fr_30px_auto] gap-2">
+      <Controller
+        name={`children.${index}.materialId`}
+        control={form.control}
+        render={({ field, fieldState }) => (
+          <Field data-invalid={fieldState.invalid}>
+            <Select
+              value={String(field.value)}
+              onValueChange={val =>
+                val === 'empty' ? null : field.onChange(val)
+              }
+            >
+              <SelectTrigger id="form-recipe-materialId">
+                <SelectValue placeholder="请选择物料" />
+              </SelectTrigger>
+              <SelectContent>
+                {materialList.map(option => (
+                  <SelectItem
+                    key={option.id}
+                    value={String(option.id)}
+                    disabled={option.status !== STATUS.ENABLE}
+                  >
+                    {option.name}
+                  </SelectItem>
+                ))}
+                {!materialList.length && (
+                  <SelectItem value="empty">
+                    暂无可用选项，请前往物料管理添加
+                  </SelectItem>
+                )}
+              </SelectContent>
+            </Select>
+            <FieldError errors={[fieldState.error]} />
+          </Field>
+        )}
+      />
+
+      <Controller
+        name={`children.${index}.amount`}
+        control={form.control}
+        render={({ field, fieldState }) => (
+          <Field data-invalid={fieldState.invalid}>
+            <Input
+              {...field}
+              onChange={e => field.onChange(Number(e.target.value))}
+              placeholder="用量"
+            />
+            <FieldError errors={[fieldState.error]} />
+          </Field>
+        )}
+      />
+
+      <div className="text-sm flex items-center">{unitLabel}</div>
+
+      <Button
+        type="button"
+        size="icon-sm"
+        variant="destructive"
+        onClick={() => remove(index)}
+      >
+        ✕
+      </Button>
+    </div>
+  );
+};
+
 interface RecipeEditProps {
   data: RecipeDto | undefined;
   open: boolean;
@@ -98,9 +187,15 @@ interface RecipeEditProps {
 }
 const RecipeEdit = (props: RecipeEditProps) => {
   const { data, open, onClose } = props;
-  const { dict } = useDict();
 
   const [materialList, setMaterialList] = useState<MaterialDto[]>([]);
+  const materialMap = useMemo(() => {
+    const map = new Map<number, MaterialDto>();
+    materialList.forEach(item => {
+      map.set(item.id, item);
+    });
+    return map;
+  }, [materialList]);
   useEffect(() => {
     if (!open) {
       return;
@@ -292,90 +387,15 @@ const RecipeEdit = (props: RecipeEditProps) => {
                   </div>
 
                   {childFields.map((item, index) => {
-                    const selectedMaterialId = form.watch(
-                      `children.${index}.materialId`,
-                    );
-                    const selectedMaterial = materialList.find(
-                      m => String(m.id) === String(selectedMaterialId),
-                    );
-                    const unitLabel =
-                      dict.recipe_unit?.find(
-                        u => u.value === selectedMaterial?.recipeUnit,
-                      )?.label ??
-                      selectedMaterial?.recipeUnit ??
-                      '-';
-
                     return (
-                      <div
+                      <RecipeMaterialItem
                         key={item.id}
-                        className="grid grid-cols-[120px_1fr_30px_auto] gap-2"
-                      >
-                        <Controller
-                          name={`children.${index}.materialId`}
-                          control={form.control}
-                          render={({ field, fieldState }) => (
-                            <Field data-invalid={fieldState.invalid}>
-                              <Select
-                                value={String(field.value)}
-                                onValueChange={val =>
-                                  val === 'empty' ? null : field.onChange(val)
-                                }
-                              >
-                                <SelectTrigger id="form-recipe-materialId">
-                                  <SelectValue placeholder="请选择物料" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  {materialList.map(option => (
-                                    <SelectItem
-                                      key={option.id}
-                                      value={String(option.id)}
-                                      disabled={option.status !== STATUS.ENABLE}
-                                    >
-                                      {option.name}
-                                    </SelectItem>
-                                  ))}
-                                  {!materialList.length && (
-                                    <SelectItem value="empty">
-                                      暂无可用选项，请前往物料管理添加
-                                    </SelectItem>
-                                  )}
-                                </SelectContent>
-                              </Select>
-                              <FieldError errors={[fieldState.error]} />
-                            </Field>
-                          )}
-                        />
-
-                        <Controller
-                          name={`children.${index}.amount`}
-                          control={form.control}
-                          render={({ field, fieldState }) => (
-                            <Field data-invalid={fieldState.invalid}>
-                              <Input
-                                {...field}
-                                onChange={e =>
-                                  field.onChange(Number(e.target.value))
-                                }
-                                placeholder="用量"
-                              />
-                              <FieldError errors={[fieldState.error]} />
-                            </Field>
-                          )}
-                        />
-
-                        <div className="text-sm flex items-center">
-                          {unitLabel}
-                        </div>
-
-                        <Button
-                          type="button"
-                          size="icon-sm"
-                          variant="destructive"
-                          onClick={() => remove(index)}
-                        >
-                          ✕
-                        </Button>
-                      </div>
+                        index={index}
+                        materialList={materialList}
+                        materialMap={materialMap}
+                        remove={remove}
+                        form={form}
+                      />
                     );
                   })}
 

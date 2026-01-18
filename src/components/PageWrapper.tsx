@@ -13,7 +13,7 @@ const PageWrapper = (props: PageWrapperProps) => {
   return (
     <div className="h-full py-4 box-border overflow-hidden flex flex-col gap-4">
       <div className="flex-none px-4 flex justify-between items-end gap-2">
-        <div className="flex-1 space-y-1">
+        <div className="flex-1 space-y-1 h-full">
           <div className="text-2xl font-bold flex items-center gap-2">
             {title}
           </div>
@@ -27,11 +27,7 @@ const PageWrapper = (props: PageWrapperProps) => {
         )}
       </div>
 
-      {actions && (
-        <div className="flex-none mx-4 flex gap-2 bg-card px-4 py-4 rounded-2xl border">
-          {actions}
-        </div>
-      )}
+      {actions && <div className="flex-none px-4 flex gap-2">{actions}</div>}
 
       <div className="flex-1 px-4 overflow-auto">{children}</div>
     </div>

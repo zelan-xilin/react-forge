@@ -94,7 +94,7 @@ const DictItemEdit = (props: DictItemEditProps) => {
     defaultValues: {
       label: '',
       value: '',
-      sort: -1,
+      sort: 0,
       status: STATUS.ENABLE,
       description: '',
     },
@@ -107,7 +107,7 @@ const DictItemEdit = (props: DictItemEditProps) => {
     form.reset({
       label: data?.label ?? '',
       value: data?.value ?? '',
-      sort: data?.sort ?? -1,
+      sort: data?.sort ?? 0,
       status: data?.status ?? STATUS.ENABLE,
       description: data?.description ?? '',
     });
@@ -234,7 +234,7 @@ const DictItemEdit = (props: DictItemEditProps) => {
                       min="-1"
                     />
                     <div className="text-xs text-muted-foreground -mt-2">
-                      -1 表示该字典子项将排在最后
+                      0 表示该字典子项将排在最后
                     </div>
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />

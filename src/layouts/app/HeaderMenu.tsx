@@ -17,8 +17,8 @@ import {
   SheetFooter,
   SheetHeader,
   SheetTitle,
-  SheetTrigger
-} from "@/components/ui/sheet";
+  SheetTrigger,
+} from '@/components/ui/sheet';
 import { isExactPathMatch } from '@/lib/router';
 import { navigationRoutes, type NavigationRoute } from '@/router/navigation';
 import type { RootState } from '@/store';
@@ -109,13 +109,15 @@ const SheetMenuItemRender = ({ route }: NavigationMenuItemRenderProps) => {
 
   if (route.children?.length) {
     return (
-      <div className='flex flex-col gap-1'>
-        <div className={`flex items-center gap-2 p-4 rounded-xl transition hover:bg-muted ${firstMenuPathActive ? 'bg-muted' : ''}`}>
+      <div className="flex flex-col gap-1">
+        <div
+          className={`flex items-center gap-2 p-4 rounded-xl transition hover:bg-muted ${firstMenuPathActive ? 'bg-muted' : ''}`}
+        >
           {Icon && <Icon className="size-6 text-foreground" />}
           {route.title}
         </div>
 
-        <div className='border-l border-primary ml-7 pl-4'>
+        <div className="border-l border-primary ml-7 pl-4">
           {route.children.map(child => {
             const childrenActive = isExactPathMatch(
               child.fullPath,
@@ -143,12 +145,16 @@ const SheetMenuItemRender = ({ route }: NavigationMenuItemRenderProps) => {
         to={route.fullPath}
         className={`flex items-center gap-2 p-4 rounded-xl transition hover:bg-muted ${firstMenuPathActive ? 'bg-primary! text-primary-foreground' : ''}`}
       >
-        {Icon && <Icon className={`size-6 ${firstMenuPathActive ? 'text-primary-foreground' : 'text-foreground'}`} />}
+        {Icon && (
+          <Icon
+            className={`size-6 ${firstMenuPathActive ? 'text-primary-foreground' : 'text-foreground'}`}
+          />
+        )}
         {route.title}
       </Link>
     </div>
   );
-}
+};
 
 const HeaderMenu = () => {
   const auth = useSelector((state: RootState) => state.auth);
@@ -194,7 +200,7 @@ const HeaderMenu = () => {
 
       <Sheet>
         <SheetTrigger asChild>
-          <Button variant="ghost" className='inline-flex xl:hidden'>
+          <Button variant="ghost" className="inline-flex xl:hidden">
             <Menu />
           </Button>
         </SheetTrigger>
@@ -207,14 +213,14 @@ const HeaderMenu = () => {
             <SheetDescription></SheetDescription>
           </SheetHeader>
 
-          <SheetBody className='flex flex-col gap-2'>
+          <SheetBody className="flex flex-col gap-2">
             {authorizedMenus.map(route => (
               <SheetMenuItemRender key={route.fullPath} route={route} />
             ))}
           </SheetBody>
 
           <SheetFooter>
-            <HeaderExtra className='justify-between' />
+            <HeaderExtra className="justify-between" />
           </SheetFooter>
         </SheetContent>
       </Sheet>

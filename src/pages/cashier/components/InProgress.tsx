@@ -18,54 +18,36 @@ import { Separator } from '@/components/ui/separator';
 import { useDict } from '@/hooks/useDict';
 import { ArrowRight, BadgeQuestionMark, CirclePlus } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import OrderClose from './OrderClose';
 import OrderEdit from './OrderEdit';
 
-/**
- * 价格组件
- * - 进度百分比
- * - 使用时间（毫秒）
- * - 规则免费时间（毫秒）
- * - 格式化使用时间
- * - 是否超时
- * - 基础价格
- * - 超时价格
- * - 赠送茶水金额
- * - 商品价格
- */
+
+interface PricePropsData {
+  basePrice: number;
+  extraPrice: number;
+  productPrice: number;
+  giftPrice: number;
+  total: number;
+}
 interface PriceProps {
-  data: {
-    progress: number;
-    elapsedMilliseconds: number;
-    ruleMilliseconds: number;
-    formattedElapsedTime: string;
-    isExceeded: boolean;
-    basePrice: number;
-    extraPrice: number;
-    giftPrice: number;
-    productPrice: number;
-  };
+  data: PricePropsData
 }
 const Price = ({ data }: PriceProps) => {
-  const { basePrice, extraPrice, giftPrice, productPrice } = data;
-  const total = (
-    basePrice +
-    extraPrice +
-    Math.max(0, productPrice - giftPrice)
-  ).toFixed();
+  const { basePrice, extraPrice, productPrice, giftPrice, total } = data;
 
   const detail = [
-    { label: '区域使用价格', value: `¥ ${basePrice}` },
-    { label: '区域超时价格', value: `¥ ${extraPrice}` },
+    { label: '基础收费', value: `¥ ${basePrice.toFixed(1)}` },
+    { label: '超时收费', value: `¥ ${extraPrice.toFixed(1)}` },
     {
       label: '商品价格',
-      value: `¥ ${productPrice}(商品价格) - ¥ ${giftPrice}(赠送茶水金额) = ¥ ${Math.max(0, productPrice - giftPrice)}`,
+      value: `¥ ${productPrice.toFixed(1)}(商品价格) - ¥ ${giftPrice.toFixed(1)}(赠送茶水金额) = ¥ ${Math.max(0, productPrice - giftPrice).toFixed(1)}`,
     },
-    { label: '总价', value: `¥ ${total}` },
+    { label: '总价', value: `¥ ${total.toFixed(1)}` },
   ];
 
   return (
     <div className="text-status-in-progress font-semibold flex items-center">
-      <span>¥&nbsp;{total}</span>
+      <span>¥&nbsp;{total.toFixed(1)}</span>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" size="icon-sm" className="-mt-0.5">
@@ -108,6 +90,11 @@ const InProgress = ({
   }>({
     open: false,
     type: 'edit',
+  });
+  const [closeModal, setCloseModal] = useState<{
+    open: boolean;
+  }>({
+    open: false,
   });
 
   /** 查找计费规则 */
@@ -159,6 +146,10 @@ const InProgress = ({
     const openedAt = new Date(order.openedAt);
 
     const updateElapsed = () => {
+      if (closeModal.open) {
+        return;
+      }
+
       const now = new Date();
       setElapsedMilliseconds(now.getTime() - openedAt.getTime());
     };
@@ -173,12 +164,17 @@ const InProgress = ({
         clearInterval(timer.current);
       }
     };
-  }, [order?.openedAt]);
+  }, [order?.openedAt, closeModal.open]);
 
   /**
    * 计算使用时间相关数据
    */
-  const usedTime = useMemo<PriceProps['data']>(() => {
+  interface UsedTimeData extends PricePropsData {
+    isExceeded: boolean;
+    formattedElapsedTime: string;
+    progress: number;
+  }
+  const usedTime = useMemo<UsedTimeData>(() => {
     const productPrice =
       order?.products?.reduce((sum, pr) => {
         return sum + (pr.unitPrice || 0) * (pr.quantity || 0);
@@ -186,15 +182,15 @@ const InProgress = ({
 
     if (!areaPricingRule || elapsedMilliseconds <= 0) {
       return {
-        progress: 0,
-        elapsedMilliseconds: 0,
-        ruleMilliseconds: 0,
-        formattedElapsedTime: '00:00:00',
         isExceeded: false,
+        formattedElapsedTime: '00:00:00',
+        progress: 0,
+
         basePrice: 0,
         extraPrice: 0,
-        giftPrice: 0,
         productPrice,
+        giftPrice: 0,
+        total: 0,
       };
     }
 
@@ -233,16 +229,21 @@ const InProgress = ({
       }
     }
 
+    const total =
+      (areaPricingRule.basePrice || 0) +
+      extraPrice +
+      Math.max(0, productPrice - (areaPricingRule.giftTeaAmount || 0));
+
     return {
-      progress: parseInt(Math.min(progress, 100).toString(), 10),
-      elapsedMilliseconds,
-      ruleMilliseconds,
-      formattedElapsedTime,
       isExceeded: elapsedMilliseconds > ruleMilliseconds,
+      formattedElapsedTime,
+      progress: parseInt(Math.min(progress, 100).toString(), 10),
+
       basePrice: areaPricingRule.basePrice || 0,
       extraPrice,
-      giftPrice: areaPricingRule.giftTeaAmount || 0,
       productPrice,
+      giftPrice: areaPricingRule.giftTeaAmount || 0,
+      total,
     };
   }, [areaPricingRule, elapsedMilliseconds, order?.products]);
 
@@ -318,6 +319,13 @@ const InProgress = ({
               </div>
             ))}
           </div>
+
+          {!!order?.remark && (
+            <div className="flex flex-col gap-2 text-xs">
+              <div className="text-muted-foreground">备注</div>
+              <div>{order?.remark}</div>
+            </div>
+          )}
         </div>
       </ScrollArea>
 
@@ -332,9 +340,14 @@ const InProgress = ({
           <Price data={usedTime} />
         </div>
 
-        <Button className="bg-status-in-progress!">
+        <Button
+          className="bg-status-in-progress!"
+          onClick={() =>
+            setCloseModal({ open: true })
+          }
+        >
           <span className="text-xs">结账</span>
-          <ArrowRight className="size-3 -mt-1" />
+          <ArrowRight className="size-3" />
         </Button>
       </div>
 
@@ -344,6 +357,19 @@ const InProgress = ({
         order={order}
         onClose={req => {
           setEditModal({ open: false, type: 'edit' });
+
+          if (req) {
+            onRefresh();
+          }
+        }}
+      />
+      <OrderClose
+        {...closeModal}
+        area={data}
+        total={usedTime.total}
+        order={order}
+        onClose={req => {
+          setCloseModal({ open: false });
 
           if (req) {
             onRefresh();

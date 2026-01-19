@@ -22,7 +22,7 @@ import { useDict } from '@/hooks/useDict';
 import type { RootState } from '@/store';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect } from 'react';
-import { Controller, useFieldArray, useForm } from 'react-hook-form';
+import { Controller, useFieldArray, useForm, useWatch } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import { toast } from 'sonner';
 import * as z from 'zod';
@@ -93,6 +93,11 @@ const OrderClose = (props: OrderCloseProps) => {
     control: form.control,
     name: 'payments',
   });
+  const payments = useWatch({
+    control: form.control,
+    name: 'payments',
+  });
+
   useEffect(() => {
     if (!open) {
       return;
@@ -155,6 +160,9 @@ const OrderClose = (props: OrderCloseProps) => {
         <ScrollArea className="max-h-[calc(100vh-400px)]">
           <FieldLabel className="tracking-widest pl-3 mb-1">
             理论收费:&nbsp;{total.toFixed(1)} 元
+          </FieldLabel>
+          <FieldLabel className="tracking-widest pl-3 mb-1">
+            当前已填写金额:&nbsp;{payments?.reduce((sum, p) => sum + (p.paymentAmount || 0), 0).toFixed(1)} 元
           </FieldLabel>
 
           <form id="form-payment" onSubmit={form.handleSubmit(onSubmit)} className='px-1 pb-1'>

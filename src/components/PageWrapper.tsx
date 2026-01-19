@@ -18,7 +18,7 @@ const PageWrapper = (props: PageWrapperProps) => {
             {title}
           </div>
           {description && (
-            <div className="text-xs text-muted-foreground">{description}</div>
+            <div className="text-xs text-muted-foreground md:block hidden">{description}</div>
           )}
         </div>
 

@@ -13,6 +13,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Toggle } from '@/components/ui/toggle';
+import { cn } from '@/lib/utils';
 import type { AppDispatch, RootState } from '@/store';
 import { clearAuth } from '@/store/modules/authSlice';
 import { setSystem } from '@/store/modules/system';
@@ -20,7 +21,10 @@ import { clearUser } from '@/store/modules/userSlice';
 import { LogOut } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 
-const HeaderExtra = () => {
+interface HeaderExtraProps {
+  className?: string;
+}
+const HeaderExtra = ({ className }: HeaderExtraProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const user = useSelector((state: RootState) => state.user);
   const system = useSelector((state: RootState) => state.system);
@@ -31,27 +35,30 @@ const HeaderExtra = () => {
   };
 
   return (
-    <div className="flex items-center gap-2">
-      <Toggle
-        aria-label="Toggle theme"
-        pressed={system.theme === 'dark'}
-        onPressedChange={pressed => {
-          dispatch(setSystem({ theme: pressed ? 'dark' : 'light' }));
-        }}
-      >
-        {system.theme === 'dark' ? '🌙' : '☀️'}
-      </Toggle>
-      <div>
-        <div className="font-medium text-lg">{user.username}</div>
-        <div className="text-xs text-success">值班中</div>
+    <div className={cn('flex items-center gap-2', className)}>
+      <div className='flex items-center gap-2'>
+        <Toggle
+          aria-label="Toggle theme"
+          pressed={system.theme === 'dark'}
+          onPressedChange={pressed => {
+            dispatch(setSystem({ theme: pressed ? 'dark' : 'light' }));
+          }}
+        >
+          {system.theme === 'dark' ? '🌙' : '☀️'}
+        </Toggle>
+        <div>
+          <div className="font-medium text-lg">{user.username}</div>
+          <div className="text-xs text-success">值班中</div>
+        </div>
+        <Avatar className="size-14">
+          <AvatarImage
+            src={IMAGES[randomIndex]?.src}
+            alt={IMAGES[randomIndex]?.alt}
+          />
+          <AvatarFallback>{IMAGES[randomIndex]?.fallback}</AvatarFallback>
+        </Avatar>
       </div>
-      <Avatar className="size-14">
-        <AvatarImage
-          src={IMAGES[randomIndex]?.src}
-          alt={IMAGES[randomIndex]?.alt}
-        />
-        <AvatarFallback>{IMAGES[randomIndex]?.fallback}</AvatarFallback>
-      </Avatar>
+
       <AlertDialog>
         <AlertDialogTrigger asChild>
           <Button size="icon" variant="ghost">

@@ -7,7 +7,7 @@ const Header = () => {
     <header className="grid gap-4 grid-cols-[auto_1fr_auto] items-center p-4 border-b border-border/70 bg-card">
       <Logo />
       <HeaderMenu />
-      <HeaderExtra />
+      <HeaderExtra className='hidden xl:flex' />
     </header>
   );
 };

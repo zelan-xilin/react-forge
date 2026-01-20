@@ -9,12 +9,13 @@ import { useState } from 'react';
 import OrderEdit from './OrderEdit';
 
 interface InNoneProps {
+  idleAreas: AreaDto[];
   data: AreaDto;
   order: OrderDto | undefined;
   onRefresh: () => void;
 }
 const InNone = (props: InNoneProps) => {
-  const { data, order, onRefresh } = props;
+  const { idleAreas, data, order, onRefresh } = props;
   const { dict } = useDict();
 
   const [editModal, setEditModal] = useState<{
@@ -72,6 +73,7 @@ const InNone = (props: InNoneProps) => {
 
       <OrderEdit
         {...editModal}
+        idleAreas={idleAreas}
         area={data}
         order={order}
         onClose={req => {

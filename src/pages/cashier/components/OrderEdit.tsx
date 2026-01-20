@@ -23,6 +23,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { ButtonGroup } from '@/components/ui/button-group';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import {
   Field,
   FieldError,
@@ -41,7 +42,7 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import type { RootState } from '@/store';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { MinusIcon, PlusIcon } from 'lucide-react';
+import { ArrowRight, MinusIcon, PlusIcon } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { Controller, useFieldArray, useForm, useWatch } from 'react-hook-form';
 import { useSelector } from 'react-redux';
@@ -208,11 +209,12 @@ interface OrderEditProps {
   open: boolean;
   type: 'edit' | 'reserved';
   area: AreaDto;
+  idleAreas: AreaDto[];
   order: OrderDto | undefined;
   onClose: (req?: boolean) => void;
 }
 const OrderEdit = (props: OrderEditProps) => {
-  const { open, type, area, order, onClose } = props;
+  const { open, type, area, idleAreas, order, onClose } = props;
   const user = useSelector((state: RootState) => state.user);
 
   const [productPricing, setProductPricing] = useState<ProductPricingDto[]>([]);
@@ -233,6 +235,7 @@ const OrderEdit = (props: OrderEditProps) => {
     });
   }, [open]);
 
+  const [afterArea, setAfterArea] = useState<AreaDto | null>(null);
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -255,6 +258,8 @@ const OrderEdit = (props: OrderEditProps) => {
     if (!open) {
       return;
     }
+
+    Promise.resolve().then(() => setAfterArea(null));
 
     const products = order?.products || [];
     if (products.length === 0) {
@@ -283,15 +288,15 @@ const OrderEdit = (props: OrderEditProps) => {
     const addRes = order
       ? { data: order }
       : await createOrderApi({
-          orderStatus:
-            type === 'reserved'
-              ? ORDER_STATUS.RESERVED
-              : ORDER_STATUS.IN_PROGRESS,
-          openedAt: type === 'reserved' ? undefined : new Date().toISOString(),
-          remark: formData.remark,
-          createdBy: user.id!,
-          createdByName: user.username!,
-        });
+        orderStatus:
+          type === 'reserved'
+            ? ORDER_STATUS.RESERVED
+            : ORDER_STATUS.IN_PROGRESS,
+        openedAt: type === 'reserved' ? undefined : new Date().toISOString(),
+        remark: formData.remark,
+        createdBy: user.id!,
+        createdByName: user.username!,
+      });
     if (order) {
       await updateOrderApi({
         orderNo: order.orderNo,
@@ -309,18 +314,18 @@ const OrderEdit = (props: OrderEditProps) => {
     await Promise.all([
       setOrderAreaApi({
         orderNo: addRes.data.orderNo,
-        areaId: area.id,
-        areaName: area.name,
-        areaType: area.areaType,
-        roomSize: area.roomSize,
+        areaId: afterArea?.id || area.id,
+        areaName: afterArea?.name || area.name,
+        areaType: afterArea?.areaType || area.areaType,
+        roomSize: afterArea?.roomSize || area.roomSize,
       }),
       ...(order?.products?.length
         ? [
-            deleteOrderItemApi({
-              type: 'product',
-              ids: order.products.map(p => p.id).filter(id => id),
-            }),
-          ]
+          deleteOrderItemApi({
+            type: 'product',
+            ids: order.products.map(p => p.id).filter(id => id),
+          }),
+        ]
         : []),
       ...validProducts.map(vp =>
         addOrderProductApi({
@@ -333,13 +338,13 @@ const OrderEdit = (props: OrderEditProps) => {
       ),
       ...(type === 'reserved'
         ? [
-            setOrderReservedApi({
-              orderNo: addRes.data.orderNo,
-              username: formData.username || null,
-              contact: formData.contact || null,
-              arriveAt: formData.arriveAt || null,
-            }),
-          ]
+          setOrderReservedApi({
+            orderNo: addRes.data.orderNo,
+            username: formData.username || null,
+            contact: formData.contact || null,
+            arriveAt: formData.arriveAt || null,
+          }),
+        ]
         : []),
     ]);
 
@@ -350,8 +355,31 @@ const OrderEdit = (props: OrderEditProps) => {
     <AlertDialog open={open}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>
+          <AlertDialogTitle className='flex items-center gap-4'>
             {area.name}&nbsp;·&nbsp;{type === 'reserved' ? '预定' : '点单'}
+
+            <ArrowRight className='size-4' />
+
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                {afterArea?.name || '更换区域'}
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>更换区域</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                {idleAreas.length === 0 && (
+                  <DropdownMenuItem>暂无可用区域</DropdownMenuItem>
+                )}
+                {idleAreas.map(idleArea => (
+                  <DropdownMenuItem
+                    key={idleArea.id}
+                    onClick={async () => setAfterArea(area.id === idleArea.id ? null : idleArea)}
+                  >
+                    {idleArea.name}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </AlertDialogTitle>
           <AlertDialogDescription>
             {!order &&

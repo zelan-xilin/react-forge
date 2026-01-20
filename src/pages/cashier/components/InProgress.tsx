@@ -70,17 +70,14 @@ const Price = ({ data }: PriceProps) => {
 };
 
 interface InProgressProps {
+  idleAreas: AreaDto[];
   data: AreaDto;
   order: OrderDto | undefined;
   areaPricing: AreaPricingDto[];
   onRefresh: () => void;
 }
-const InProgress = ({
-  data,
-  order,
-  areaPricing,
-  onRefresh,
-}: InProgressProps) => {
+const InProgress = (props: InProgressProps) => {
+  const { idleAreas, data, order, areaPricing, onRefresh, } = props;
   const { dict } = useDict();
 
   const [editModal, setEditModal] = useState<{
@@ -267,7 +264,7 @@ const InProgress = ({
 
       <ScrollArea className="h-50 pr-4 -mr-4 box-border">
         <div className="relative flex flex-col gap-4">
-          <div className="bg-card sticky top-0">
+          <div className="bg-card sticky top-0 cursor-pointer" onClick={() => setEditModal({ open: true, type: 'edit' })}>
             <div className="rounded-lg bg-accent p-4 flex flex-col gap-4">
               <div className="flex justify-between text-xs">
                 <span className="text-muted-foreground scale-85 origin-left">
@@ -350,6 +347,7 @@ const InProgress = ({
 
       <OrderEdit
         {...editModal}
+        idleAreas={idleAreas}
         area={data}
         order={order}
         onClose={req => {

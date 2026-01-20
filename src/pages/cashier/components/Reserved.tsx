@@ -13,11 +13,13 @@ import { useSelector } from 'react-redux';
 import OrderEdit from './OrderEdit';
 
 interface ReservedProps {
+  idleAreas: AreaDto[];
   data: AreaDto;
   order: OrderDto | undefined;
   onRefresh: () => void;
 }
-const Reserved = ({ data, order, onRefresh }: ReservedProps) => {
+const Reserved = (props: ReservedProps) => {
+  const { idleAreas, data, order, onRefresh } = props;
   const { dict } = useDict();
   const user = useSelector((state: RootState) => state.user);
 
@@ -156,6 +158,7 @@ const Reserved = ({ data, order, onRefresh }: ReservedProps) => {
 
       <OrderEdit
         {...editModal}
+        idleAreas={idleAreas}
         area={data}
         order={order}
         onClose={req => {

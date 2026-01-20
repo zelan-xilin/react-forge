@@ -59,11 +59,13 @@ const Cashier = () => {
   /** 区域、订单渲染组件 */
   const areaRender = (area: AreaDto) => {
     const order = orderData.find(it => it.area?.areaId === area.id);
+    const idleAreas = areaData.filter(it => it.status === STATUS.ENABLE && !orderData.some(od => od.area?.areaId === it.id));
 
     if (order?.orderStatus === ORDER_STATUS.RESERVED) {
       return (
         <Reserved
           key={area.id}
+          idleAreas={idleAreas}
           data={area}
           order={order}
           onRefresh={onRefresh}
@@ -75,6 +77,7 @@ const Cashier = () => {
       return (
         <InProgress
           key={area.id}
+          idleAreas={idleAreas}
           data={area}
           order={order}
           onRefresh={onRefresh}
@@ -88,7 +91,8 @@ const Cashier = () => {
     }
 
     return (
-      <Idle key={area.id} data={area} order={order} onRefresh={onRefresh} />
+      <Idle key={area.id}
+        idleAreas={idleAreas} data={area} order={order} onRefresh={onRefresh} />
     );
   };
 

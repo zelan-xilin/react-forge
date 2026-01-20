@@ -29,7 +29,7 @@ const PageWrapper = (props: PageWrapperProps) => {
         )}
       </div>
 
-      {actions && <div className="flex-none px-4 flex gap-2">{actions}</div>}
+      {actions && <div className="flex-none px-4 flex gap-x-2 gap-y-1 flex-wrap">{actions}</div>}
 
       <div className="flex-1 px-4 overflow-auto">{children}</div>
     </div>

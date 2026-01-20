@@ -315,8 +315,8 @@ const OrderClose = (props: OrderCloseProps) => {
                       实际收取金额与理论收费差异原因
                     </FieldLabel>
 
-                    <div className='flex gap-x-2 gap-y-0.5 items-center flex-wrap'>
-                      <span className='text-xs'>快捷原因选择:&nbsp;</span>
+                    <div className="flex gap-x-2 gap-y-0.5 items-center flex-wrap">
+                      <span className="text-xs">快捷原因选择:&nbsp;</span>
                       {dict.payment_price_modify_reason?.map(it => (
                         <Button
                           key={it.value}

@@ -23,7 +23,14 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { ButtonGroup } from '@/components/ui/button-group';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import {
   Field,
   FieldError,
@@ -288,15 +295,15 @@ const OrderEdit = (props: OrderEditProps) => {
     const addRes = order
       ? { data: order }
       : await createOrderApi({
-        orderStatus:
-          type === 'reserved'
-            ? ORDER_STATUS.RESERVED
-            : ORDER_STATUS.IN_PROGRESS,
-        openedAt: type === 'reserved' ? undefined : new Date().toISOString(),
-        remark: formData.remark,
-        createdBy: user.id!,
-        createdByName: user.username!,
-      });
+          orderStatus:
+            type === 'reserved'
+              ? ORDER_STATUS.RESERVED
+              : ORDER_STATUS.IN_PROGRESS,
+          openedAt: type === 'reserved' ? undefined : new Date().toISOString(),
+          remark: formData.remark,
+          createdBy: user.id!,
+          createdByName: user.username!,
+        });
     if (order) {
       await updateOrderApi({
         orderNo: order.orderNo,
@@ -321,11 +328,11 @@ const OrderEdit = (props: OrderEditProps) => {
       }),
       ...(order?.products?.length
         ? [
-          deleteOrderItemApi({
-            type: 'product',
-            ids: order.products.map(p => p.id).filter(id => id),
-          }),
-        ]
+            deleteOrderItemApi({
+              type: 'product',
+              ids: order.products.map(p => p.id).filter(id => id),
+            }),
+          ]
         : []),
       ...validProducts.map(vp =>
         addOrderProductApi({
@@ -338,13 +345,13 @@ const OrderEdit = (props: OrderEditProps) => {
       ),
       ...(type === 'reserved'
         ? [
-          setOrderReservedApi({
-            orderNo: addRes.data.orderNo,
-            username: formData.username || null,
-            contact: formData.contact || null,
-            arriveAt: formData.arriveAt || null,
-          }),
-        ]
+            setOrderReservedApi({
+              orderNo: addRes.data.orderNo,
+              username: formData.username || null,
+              contact: formData.contact || null,
+              arriveAt: formData.arriveAt || null,
+            }),
+          ]
         : []),
     ]);
 
@@ -355,11 +362,9 @@ const OrderEdit = (props: OrderEditProps) => {
     <AlertDialog open={open}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle className='flex items-center gap-4'>
+          <AlertDialogTitle className="flex items-center gap-4">
             {area.name}&nbsp;·&nbsp;{type === 'reserved' ? '预定' : '点单'}
-
-            <ArrowRight className='size-4' />
-
+            <ArrowRight className="size-4" />
             <DropdownMenu>
               <DropdownMenuTrigger>
                 {afterArea?.name || '更换区域'}
@@ -373,7 +378,7 @@ const OrderEdit = (props: OrderEditProps) => {
                 {idleAreas.map(idleArea => (
                   <DropdownMenuItem
                     key={idleArea.id}
-                    onClick={async () => setAfterArea(area.id === idleArea.id ? null : idleArea)}
+                    onClick={async () => setAfterArea(idleArea)}
                   >
                     {idleArea.name}
                   </DropdownMenuItem>

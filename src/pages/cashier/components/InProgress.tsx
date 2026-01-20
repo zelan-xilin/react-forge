@@ -77,7 +77,7 @@ interface InProgressProps {
   onRefresh: () => void;
 }
 const InProgress = (props: InProgressProps) => {
-  const { idleAreas, data, order, areaPricing, onRefresh, } = props;
+  const { idleAreas, data, order, areaPricing, onRefresh } = props;
   const { dict } = useDict();
 
   const [editModal, setEditModal] = useState<{
@@ -264,7 +264,10 @@ const InProgress = (props: InProgressProps) => {
 
       <ScrollArea className="h-50 pr-4 -mr-4 box-border">
         <div className="relative flex flex-col gap-4">
-          <div className="bg-card sticky top-0 cursor-pointer" onClick={() => setEditModal({ open: true, type: 'edit' })}>
+          <div
+            className="bg-card sticky top-0 cursor-pointer"
+            onClick={() => setEditModal({ open: true, type: 'edit' })}
+          >
             <div className="rounded-lg bg-accent p-4 flex flex-col gap-4">
               <div className="flex justify-between text-xs">
                 <span className="text-muted-foreground scale-85 origin-left">

@@ -8,7 +8,7 @@ const Main = () => {
   return (
     <main>
       <Suspense fallback={<LoadingFallback />}>
-        <KeepAliveOutlet activeKey={activeKey} />
+        <KeepAliveOutlet activeKey={activeKey} max={1} />
       </Suspense>
     </main>
   );

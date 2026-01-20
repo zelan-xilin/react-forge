@@ -21,7 +21,6 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import OrderClose from './OrderClose';
 import OrderEdit from './OrderEdit';
 
-
 interface PricePropsData {
   basePrice: number;
   extraPrice: number;
@@ -30,7 +29,7 @@ interface PricePropsData {
   total: number;
 }
 interface PriceProps {
-  data: PricePropsData
+  data: PricePropsData;
 }
 const Price = ({ data }: PriceProps) => {
   const { basePrice, extraPrice, productPrice, giftPrice, total } = data;
@@ -342,9 +341,7 @@ const InProgress = ({
 
         <Button
           className="bg-status-in-progress!"
-          onClick={() =>
-            setCloseModal({ open: true })
-          }
+          onClick={() => setCloseModal({ open: true })}
         >
           <span className="text-xs">结账</span>
           <ArrowRight className="size-3" />

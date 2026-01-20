@@ -98,7 +98,7 @@ export const mustHaveDictOptions = [
     description: '子项如：现金、微信、支付宝、会员卡',
   },
   {
-    label: '支付价格修改原因',
+    label: '支付价格差异原因',
     value: MUST_HAVE_DICT.PAYMENT_PRICE_MODIFY_REASON,
     description: '子项如：优惠、加价、其他',
   },

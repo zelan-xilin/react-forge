@@ -1,5 +1,9 @@
 import type { AreaDto } from '@/api/area/types';
-import { addOrderPaymentApi, updateOrderApi } from '@/api/cashier';
+import {
+  addOrderPaymentApi,
+  setOrderAreaApi,
+  updateOrderApi,
+} from '@/api/cashier';
 import type { OrderDto } from '@/api/cashier/types';
 import { ORDER_STATUS, STATUS } from '@/assets/enum';
 import {
@@ -13,10 +17,25 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
-import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field';
-import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group';
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from '@/components/ui/field';
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from '@/components/ui/input-group';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useDict } from '@/hooks/useDict';
 import type { RootState } from '@/store';
@@ -70,13 +89,13 @@ export interface OrderCloseProps {
   open: boolean;
   onClose: (req?: boolean) => void;
   area: AreaDto;
-  total: number
+  total: number;
   order: OrderDto | undefined;
 }
 const OrderClose = (props: OrderCloseProps) => {
   const { open, onClose, area, total, order } = props;
   const user = useSelector((state: RootState) => state.user);
-  const { dict } = useDict()
+  const { dict } = useDict();
 
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
@@ -105,10 +124,12 @@ const OrderClose = (props: OrderCloseProps) => {
 
     form.reset({
       paymentDifferenceReason: '',
-      payments: [{
-        paymentMethod: dict.payment_method?.[0]?.value || '',
-        paymentAmount: Number(total.toFixed(1)),
-      }],
+      payments: [
+        {
+          paymentMethod: dict.payment_method?.[0]?.value || '',
+          paymentAmount: Number(total.toFixed(1)),
+        },
+      ],
     });
   }, [open, total, form, dict.payment_method]);
   const onSubmit = async (formData: FormSchema) => {
@@ -123,29 +144,41 @@ const OrderClose = (props: OrderCloseProps) => {
       orderNo: order.orderNo,
       orderStatus: ORDER_STATUS.PAID,
       closedAt: new Date().toISOString(),
-      expectedAmount: total,
-      actualAmount,
+      expectedAmount: Number(total.toFixed(1)),
+      actualAmount: Number(actualAmount.toFixed(1)),
       paymentDifferenceReason: formData.paymentDifferenceReason,
       updatedBy: user.id!,
       updatedByName: user.username!,
     });
 
+    setOrderAreaApi({
+      orderNo: order.orderNo,
+      areaId: area.id,
+      areaName: area.name,
+      areaType:
+        dict.area_type?.find(d => d.value === area.areaType)?.label || '',
+      roomSize:
+        dict.room_size?.find(d => d.value === area.roomSize)?.label || '',
+    });
+
     formData.payments.forEach(p => {
       if (!p.paymentAmount || !p.paymentMethod) {
-        return
+        return;
       }
 
       addOrderPaymentApi({
         orderNo: order.orderNo,
         paymentMethod: p.paymentMethod,
-        paymentMethodName: dict.payment_method?.find(d => d.value === p.paymentMethod)?.label || '',
+        paymentMethodName:
+          dict.payment_method?.find(d => d.value === p.paymentMethod)?.label ||
+          '',
         paymentAmount: p.paymentAmount,
-      })
-    })
+      });
+    });
 
     toast.success('订单结账成功');
     onClose(true);
-  }
+  };
 
   return (
     <AlertDialog open={open}>
@@ -162,81 +195,98 @@ const OrderClose = (props: OrderCloseProps) => {
             理论收费:&nbsp;{total.toFixed(1)} 元
           </FieldLabel>
           <FieldLabel className="tracking-widest pl-3 mb-1">
-            当前已填写金额:&nbsp;{payments?.reduce((sum, p) => sum + (p.paymentAmount || 0), 0).toFixed(1)} 元
+            当前已填写金额:&nbsp;
+            {payments
+              ?.reduce((sum, p) => sum + (p.paymentAmount || 0), 0)
+              .toFixed(1)}{' '}
+            元
           </FieldLabel>
 
-          <form id="form-payment" onSubmit={form.handleSubmit(onSubmit)} className='px-1 pb-1'>
+          <form
+            id="form-payment"
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="px-1 pb-1"
+          >
             <FieldGroup>
               <div className="rounded-lg border bg-card p-4 flex flex-col gap-2">
                 <div className="grid grid-cols-[1fr_120px_32px] items-center gap-2">
-                  <FieldLabel className="tracking-widest pl-3">支付方式</FieldLabel>
+                  <FieldLabel className="tracking-widest pl-3">
+                    支付方式
+                  </FieldLabel>
                   <FieldLabel className="tracking-widest pl-3">金额</FieldLabel>
                 </div>
 
-                {paymentFields.map((item, index) => <div key={item.id} className="grid grid-cols-[1fr_120px_32px] items-center gap-2">
-                  <Controller
-                    name={`payments.${index}.paymentMethod`}
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
-                        <Select
-                          value={field.value}
-                          onValueChange={val =>
-                            val === 'empty' ? null : field.onChange(val)
-                          }
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder="请选择支付方式" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {dict.payment_method?.map(option => (
-                              <SelectItem
-                                key={option.value}
-                                value={String(option.value)}
-                                disabled={option.status !== STATUS.ENABLE}
-                              >
-                                {option.label}
-                              </SelectItem>
-                            ))}
-                            {!dict.payment_method?.length && (
-                              <SelectItem value="empty">
-                                暂无可用选项，请前往字典管理添加
-                              </SelectItem>
-                            )}
-                          </SelectContent>
-                        </Select>
-                        <FieldError errors={[fieldState.error]} />
-                      </Field>
-                    )}
-                  />
-
-                  <Controller
-                    name={`payments.${index}.paymentAmount`}
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
-                        <InputGroup>
-                          <InputGroupAddon>¥</InputGroupAddon>
-                          <InputGroupInput {...field}
-                            onChange={e => {
-                              const value = e.target.value.replace(/\D/g, '');
-                              field.onChange(Number(value));
-                            }} />
-                        </InputGroup>
-                        <FieldError errors={[fieldState.error]} />
-                      </Field>
-                    )}
-                  />
-
-                  <Button
-                    type="button"
-                    size="icon-sm"
-                    variant="destructive"
-                    onClick={() => remove(index)}
+                {paymentFields.map((item, index) => (
+                  <div
+                    key={item.id}
+                    className="grid grid-cols-[1fr_120px_32px] items-center gap-2"
                   >
-                    ✕
-                  </Button>
-                </div>)}
+                    <Controller
+                      name={`payments.${index}.paymentMethod`}
+                      control={form.control}
+                      render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                          <Select
+                            value={field.value}
+                            onValueChange={val =>
+                              val === 'empty' ? null : field.onChange(val)
+                            }
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="请选择支付方式" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {dict.payment_method?.map(option => (
+                                <SelectItem
+                                  key={option.value}
+                                  value={String(option.value)}
+                                  disabled={option.status !== STATUS.ENABLE}
+                                >
+                                  {option.label}
+                                </SelectItem>
+                              ))}
+                              {!dict.payment_method?.length && (
+                                <SelectItem value="empty">
+                                  暂无可用选项，请前往字典管理添加
+                                </SelectItem>
+                              )}
+                            </SelectContent>
+                          </Select>
+                          <FieldError errors={[fieldState.error]} />
+                        </Field>
+                      )}
+                    />
+
+                    <Controller
+                      name={`payments.${index}.paymentAmount`}
+                      control={form.control}
+                      render={({ field, fieldState }) => (
+                        <Field data-invalid={fieldState.invalid}>
+                          <InputGroup>
+                            <InputGroupAddon>¥</InputGroupAddon>
+                            <InputGroupInput
+                              {...field}
+                              onChange={e => {
+                                const value = e.target.value.replace(/\D/g, '');
+                                field.onChange(Number(value));
+                              }}
+                            />
+                          </InputGroup>
+                          <FieldError errors={[fieldState.error]} />
+                        </Field>
+                      )}
+                    />
+
+                    <Button
+                      type="button"
+                      size="icon-sm"
+                      variant="destructive"
+                      onClick={() => remove(index)}
+                    >
+                      ✕
+                    </Button>
+                  </div>
+                ))}
 
                 <Button
                   type="button"
@@ -264,6 +314,22 @@ const OrderClose = (props: OrderCloseProps) => {
                     >
                       实际收取金额与理论收费差异原因
                     </FieldLabel>
+
+                    <div className='flex gap-x-2 gap-y-0.5 items-center flex-wrap'>
+                      <span className='text-xs'>快捷原因选择:&nbsp;</span>
+                      {dict.payment_price_modify_reason?.map(it => (
+                        <Button
+                          key={it.value}
+                          size="sm"
+                          variant="secondary"
+                          type="button"
+                          onClick={() => field.onChange(it.label)}
+                        >
+                          {it.label}
+                        </Button>
+                      ))}
+                    </div>
+
                     <Textarea
                       {...field}
                       id="form-dict-description"

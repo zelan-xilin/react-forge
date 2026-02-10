@@ -1,6 +1,6 @@
 import { userDeleteApi, userPageApi } from '@/api/user';
 import type { UserDto, UserPageParams } from '@/api/user/types';
-import { STATUS } from '@/assets/enum';
+import { IS_ADMIN, STATUS } from '@/assets/enum';
 import Delete from '@/components/Delete';
 import PageWrapper from '@/components/PageWrapper';
 import Status from '@/components/Status';
@@ -102,11 +102,12 @@ const User = () => {
             variant="link"
             size="sm"
             className="px-0 text-xs"
+            disabled={item.isAdmin === IS_ADMIN.YES}
             onClick={() => setPasswordModal({ open: true, data: item })}
           >
             修改密码
           </Button>
-          <Delete onDelete={() => onDelete(item)}>
+          <Delete disabled={item.isAdmin === IS_ADMIN.YES} onDelete={() => onDelete(item)}>
             <Button variant="link" size="sm" className="px-0 text-xs">
               删除
             </Button>
